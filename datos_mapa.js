@@ -1,7 +1,7 @@
 // Generado por actualizar.py. Sin datos de personas. Uso: <script src="datos_mapa.js"></script>
 window.DATOS_MAPA = {
   "schema_version": 2,
-  "generado": "2026-11-25T20:03:35",
+  "generado": "2026-11-25T20:03:46",
   "hoy": "2026-11-25",
   "proyecto": {
     "inicio": "2026-11-21",
@@ -84,7 +84,7 @@ window.DATOS_MAPA = {
   ],
   "embudo": {
     "total": {
-      "en_lista": 12,
+      "en_lista": 13,
       "contactos": 0,
       "respuestas": 0,
       "conversaciones": 0,
@@ -103,7 +103,7 @@ window.DATOS_MAPA = {
         "cobrado": 0
       },
       "portales": {
-        "en_lista": 2,
+        "en_lista": 3,
         "contactos": 0,
         "respuestas": 0,
         "conversaciones": 0,
@@ -123,14 +123,14 @@ window.DATOS_MAPA = {
     }
   },
   "postulaciones": {
-    "total_registradas": 2,
-    "preparadas_esperando_aprobacion": 2,
+    "total_registradas": 3,
+    "preparadas_esperando_aprobacion": 1,
     "aprobadas_por_enviar": 0,
     "enviadas": 0,
     "respondidas": 0,
     "entrevistas": 0,
-    "descartadas": 0,
-    "bandejas_pendientes_en_archivos": 6
+    "descartadas": 2,
+    "bandejas_pendientes_en_archivos": 4
   },
   "bandeja": {
     "fecha": "2026-11-25",
@@ -144,28 +144,6 @@ window.DATOS_MAPA = {
         "por_que": "área 35, modalidad 10, jornada 10, pago 6, requisitos 10, bono reciente 5",
         "brechas": "SAP S/4HANA, SAP BusinessObjects y SAP Data Services (requisito central; no están en el maestro); jornada y modalidad sin dato",
         "enlace": "https://www.linkedin.com/jobs/view/4492838962/",
-        "tipo": "postulación"
-      },
-      {
-        "id": "li-4491981170",
-        "titulo": "Especialista Inteligencia de Negocio - Vicerrectoría de Vinculación con el Medio",
-        "empresa": "Duoc UC",
-        "portal": "linkedin",
-        "puntaje": 76,
-        "por_que": "área 35, modalidad 10, jornada 10, pago 6, requisitos 10, bono reciente 5",
-        "brechas": "diplomado o certificación en BI (hay cursos de Power BI y SQL hechos mientras trabajaba en CGE, sin comprobantes a mano); presencialidad en Casa Central sin confirmar",
-        "enlace": "https://www.linkedin.com/jobs/view/4491981170/",
-        "tipo": "postulación"
-      },
-      {
-        "id": "li-4490654738",
-        "titulo": "BI Developer (Power BI & Power Platform) - Remote Work",
-        "empresa": "BairesDev",
-        "portal": "linkedin",
-        "puntaje": 69,
-        "por_que": "área 35, modalidad 20, jornada 10, pago 6, requisitos 8, bono consultora 5, castigo inglés -15",
-        "brechas": "inglés C1 exigido (Rodrigo tiene intermedio: según REGLAS §7 se descarta); ETL nombrado como tal; administración de workspaces, seguridad y refresh; Power Platform en nivel intermedio",
-        "enlace": "https://www.linkedin.com/jobs/view/4490654738/",
         "tipo": "postulación"
       }
     ]
@@ -276,9 +254,9 @@ window.DATOS_MAPA = {
       "prioridad": 5,
       "tipo": "revisar_bandeja",
       "carril": "portales",
-      "cantidad": 2,
+      "cantidad": 1,
       "segmento": "",
-      "texto": "Revisar la bandeja: 2 postulaciones preparadas",
+      "texto": "Revisar la bandeja: 1 postulación preparada",
       "orden": 1
     },
     {
