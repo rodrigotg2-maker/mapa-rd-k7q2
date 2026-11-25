@@ -112,6 +112,59 @@ a:hover{text-decoration:underline}
 </div>
 </sc-if>
 
+<sc-if value="{{ isBand }}">
+<div style="display:flex;flex-direction:column;gap:12px;animation:mpIn .4s ease backwards">
+<div style="background:#2C3E50;color:#fff;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px">
+<span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#D8BE8A">BANDEJA DEL AGENTE</span>
+<span style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.2;text-wrap:balance">{{ bandTitulo }}</span>
+<span style="font-size:13px;color:#AEBBCA;line-height:1.4">{{ bandSub }}</span>
+</div>
+<sc-if value="{{ bandHay }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#EBF4FA;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.4;color:#1D4E73"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;line-height:1.1">open_in_new</span><span>Se abre GitHub: toca <strong>Submit</strong> para guardar la decisión.</span></div></sc-if>
+<sc-if value="{{ bandVacia }}"><div style="background:#fff;border-radius:18px;padding:22px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center"><span style="width:56px;height:56px;border-radius:50%;background:#F7F1E7;color:#8C6A2E;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:30px;line-height:1">inbox</span><span style="font-size:16px;font-weight:800">No hay avisos por decidir</span><span style="font-size:13.5px;line-height:1.45;color:#5A6472;text-wrap:pretty">Cuando el agente deje una bandeja nueva, los avisos aparecen aquí para aprobarlos, descartarlos o editarlos.</span></div></sc-if>
+<sc-for list="{{ bandItems }}" as="it" hint-placeholder-count="3">
+<div style="background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;border-top:5px solid {{ it.color }};box-sizing:border-box;min-width:0">
+<div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+<sc-if value="{{ it.tipoTag }}"><span style="align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:999px;background:#EEF1F5;color:#3C4552">{{ it.tipoTag }}</span></sc-if>
+<span style="font-size:16px;font-weight:800;line-height:1.25;text-wrap:pretty">{{ it.titulo }}</span>
+<span style="font-size:13.5px;color:#3C4552;line-height:1.35">{{ it.empresa }}</span>
+<span style="display:flex;gap:5px;align-items:center;font-size:12px;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">work</span>{{ it.portal }}</span>
+</div>
+<sc-if value="{{ it.hayPuntaje }}"><div style="flex:none;display:flex;flex-direction:column;align-items:center;background:#F7F1E7;border-radius:12px;padding:6px 10px"><span style="font-size:20px;font-weight:800;color:#8C6A2E;font-variant-numeric:tabular-nums;line-height:1.1">{{ it.puntaje }}</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#8C6A2E">PUNTOS</span></div></sc-if>
+</div>
+<sc-if value="{{ it.hayPorQue }}"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#8C6A2E">POR QUÉ CALZA</span><span style="font-size:13.5px;line-height:1.45;color:#1B2430;text-wrap:pretty">{{ it.porQue }}</span></div></sc-if>
+<sc-if value="{{ it.hayBrechas }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#F7F1E7;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5C4A26"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;color:#8C6A2E;line-height:1.1">info</span><span><strong>Brechas:</strong> {{ it.brechas }}</span></div></sc-if>
+<sc-if value="{{ it.hayEnlace }}"><a href="{{ it.enlace }}" target="_blank" rel="noopener noreferrer" style="min-height:44px;border-radius:12px;background:#EBF4FA;color:#1D4E73;text-decoration:none;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Ver aviso</a></sc-if>
+<sc-if value="{{ it.pend }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+<a href="{{ it.urlAprobar }}" target="_blank" rel="noopener noreferrer" onClick="{{ it.clickAprobar }}" style="min-height:48px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">check</span>Aprobar</a>
+<button onClick="{{ it.toggleDesc }}" style="min-height:48px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid {{ it.descBd }};background:{{ it.descBg }};color:#3C4552;font-family:'Figtree',sans-serif" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">close</span>Descartar</button>
+<button onClick="{{ it.toggleEd }}" style="min-height:48px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid {{ it.edBd }};background:{{ it.edBg }};color:#3C4552;font-family:'Figtree',sans-serif" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">edit</span>Editar</button>
+</div>
+<sc-if value="{{ it.modoDesc }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F6F8FB;border-radius:12px;padding:12px;animation:mpIn .25s ease backwards">
+<span style="font-size:13px;font-weight:700;line-height:1.35">¿Por qué lo descartas? Un toque abre GitHub.</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ it.motivos }}" as="m"><a href="{{ m.url }}" target="_blank" rel="noopener noreferrer" onClick="{{ m.click }}" style="min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid #DCE2EA;background:#fff;color:#1B2430;text-decoration:none;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center" style-active="transform:scale(.97)">{{ m.label }}</a></sc-for>
+</div>
+</div></sc-if>
+<sc-if value="{{ it.modoEd }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F6F8FB;border-radius:12px;padding:12px;animation:mpIn .25s ease backwards">
+<span style="font-size:13px;font-weight:700;line-height:1.35">¿Qué hay que cambiar? Escríbelo y se abre GitHub.</span>
+<textarea value="{{ it.texto }}" onChange="{{ it.onTexto }}" rows="3" maxLength="600" placeholder="Por ejemplo: cambia el saludo y nombra Power BI" style="width:100%;box-sizing:border-box;border:1.5px solid #DCE2EA;border-radius:12px;padding:10px 12px;font:500 15px/1.4 'Figtree',sans-serif;color:#1B2430;background:#fff;resize:vertical"></textarea>
+<sc-if value="{{ it.hayTexto }}"><a href="{{ it.urlEditar }}" target="_blank" rel="noopener noreferrer" onClick="{{ it.clickEditar }}" style="min-height:48px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Abrir GitHub con la edición</a></sc-if>
+<sc-if value="{{ it.sinTexto }}"><span style="min-height:48px;border-radius:12px;background:#EEF1F5;color:#8B95A3;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center">Escribe el cambio para continuar</span></sc-if>
+</div></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ it.sent }}"><div style="display:flex;flex-direction:column;gap:8px;background:#EBF4FA;border-radius:12px;padding:12px;color:#1D4E73;animation:mpPop .35s ease backwards">
+<div style="display:flex;gap:8px;align-items:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;color:#2378B5">cloud_upload</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong style="font-size:14px">Enviada a GitHub, falta confirmar</strong><span style="font-size:12.5px;line-height:1.4">{{ it.sentTxt }}</span></div></div>
+<button onClick="{{ it.deshacer }}" style="min-height:44px;border:1px solid #B9D3E6;border-radius:12px;background:#fff;color:#1D4E73;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">No llegué a tocar Submit</button>
+</div></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
 <sc-if value="{{ isMapa }}">
 <div style="display:flex;flex-direction:column;gap:12px;animation:mpIn .4s ease backwards">
 <div style="background:#2C3E50;color:#fff;border-radius:20px;padding:16px 12px 18px 12px;display:flex;flex-direction:column;gap:12px">
@@ -256,10 +309,10 @@ a:hover{text-decoration:underline}
 </div>
 </div>
 
-<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;z-index:30;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid #DCE2EA;padding-bottom:env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
-<sc-for list="{{ tabsM }}" as="tb" hint-placeholder-count="5">
+<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;z-index:30;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid #DCE2EA;padding-bottom:env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(6,minmax(0,1fr))">
+<sc-for list="{{ tabsM }}" as="tb" hint-placeholder-count="6">
 <button onClick="{{ tb.pick }}" style="min-height:60px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px;font-family:'Figtree',sans-serif;color:{{ tb.fg }};transition-property:color,transform;transition-duration:.15s" style-active="transform:scale(.94)">
-<span style="width:52px;height:30px;border-radius:999px;background:{{ tb.pill }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:23px;line-height:1;transition-property:background-color;transition-duration:.2s">{{ tb.icon }}</span>
+<span style="position:relative;width:52px;height:30px;border-radius:999px;background:{{ tb.pill }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:23px;line-height:1;transition-property:background-color;transition-duration:.2s">{{ tb.icon }}<sc-if value="{{ tb.badge }}"><span style="position:absolute;top:-5px;right:-1px;min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:9px;background:#8C6A2E;color:#fff;border:2px solid #fff;font:800 10.5px/14px 'Figtree',sans-serif;text-align:center">{{ tb.badge }}</span></sc-if></span>
 <span style="font-size:11.5px;font-weight:{{ tb.weight }};line-height:1">{{ tb.label }}</span>
 </button>
 </sc-for>
@@ -301,7 +354,7 @@ a:hover{text-decoration:underline}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;demo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;animaciones&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;}}">
 class Component extends DCLogic {
-  state = { data: null, missing: false, M: false, t: 0, len: 0, av: null, tab: 'hoy', seg: 'cal', sheet: false, intro: -1, sel: null, done: {}, pend: {}, celeb: null, pieces: null, tour: -1 };
+  state = { data: null, missing: false, M: false, t: 0, len: 0, av: null, tab: 'hoy', seg: 'cal', sheet: false, intro: -1, sel: null, done: {}, pend: {}, bEnv: {}, bUi: {}, celeb: null, pieces: null, tour: -1 };
   pathRef = React.createRef();
   calRef = React.createRef();
   PTS = [[44, 56], [100, 168], [44, 280], [100, 392], [44, 504], [100, 616], [44, 728]];
@@ -320,6 +373,7 @@ class Component extends DCLogic {
   componentDidMount() {
     try { const tb = localStorage.getItem('mapaTabMovil'); if (tb) this.setState({ tab: tb }); } catch (e) {}
     try { this.setState({ pend: JSON.parse(localStorage.getItem('mapaPendientes') || '{}') }); } catch (e) {}
+    try { this.setState({ bEnv: JSON.parse(localStorage.getItem('mapaBandejaEnviadas') || '{}') }); } catch (e) {}
     let tries = 0;
     const load = () => {
       if (window.DATOS_MAPA) this.setState({ data: window.DATOS_MAPA }, () => this.afterData());
@@ -418,6 +472,72 @@ class Component extends DCLogic {
     const pieces = this.anim() ? Array.from({ length: 90 }, (_, i) => ({ l: Math.random() * 100, d: Math.random() * 0.9, dur: 2.2 + Math.random() * 1.6, c: cols[i % cols.length], w: 6 + Math.random() * 6, h: 8 + Math.random() * 10, r: Math.random() * 360 })) : null;
     this.setState({ celeb: c, pieces });
   }
+  BANDEJA_REPO() { return 'https://github.com/rodrigotg2-maker/mapa-rd-k7q2/issues/new'; }
+  bandUrl(id, accion, extra) {
+    const cuerpo = 'id: ' + id + '\ndecision: ' + accion + (extra ? '\n' + extra : '');
+    return this.BANDEJA_REPO() + '?title=' + encodeURIComponent('decision ' + id + ' ' + accion) + '&body=' + encodeURIComponent(cuerpo) + '&labels=decision';
+  }
+  bandItems(D) {
+    const B = (D && D.bandeja) || {};
+    return Array.isArray(B.items) ? B.items.filter(x => x && /^[A-Za-z0-9_.:-]{1,80}$/.test(String(x.id || ''))) : [];
+  }
+  bandResumen(D) {
+    const its = this.bandItems(D), env = this.state.bEnv || {};
+    const enviadas = its.filter(x => env[x.id]).length;
+    return { n: its.length, enviadas, pendientes: its.length - enviadas, todas: its.length > 0 && enviadas === its.length };
+  }
+  setBUi(id, patch) { const u = this.state.bUi || {}; this.setState({ bUi: { ...u, [id]: { ...(u[id] || {}), ...patch } } }); }
+  guardarEnviadas(env) { try { localStorage.setItem('mapaBandejaEnviadas', JSON.stringify(env)); } catch (e) {} }
+  marcarEnviada(id, accion) {
+    const lim = Date.now() - 30 * 864e5, env = {};
+    Object.entries(this.state.bEnv || {}).forEach(([k, v]) => { if (v && Date.parse(v.t) > lim) env[k] = v; });
+    env[id] = { a: accion, t: new Date().toISOString() };
+    this.setState({ bEnv: env, bUi: { ...(this.state.bUi || {}), [id]: {} } });
+    this.guardarEnviadas(env);
+  }
+  quitarMarca(id) {
+    const env = { ...(this.state.bEnv || {}) };
+    delete env[id];
+    this.setState({ bEnv: env });
+    this.guardarEnviadas(env);
+  }
+  bandejaVals(D) {
+    const S = this.state, its = this.bandItems(D), env = S.bEnv || {}, ui = S.bUi || {}, B = (D && D.bandeja) || {};
+    const MOT = ['inglés', 'área', 'sueldo', 'modalidad', 'otro'];
+    const dm = iso => { if (!iso) return ''; const [y, m, d] = iso.split('-'); return d + '/' + m + (y !== '2026' ? '/' + y.slice(2) : ''); };
+    const R = this.bandResumen(D);
+    const items = its.map(x => {
+      const id = x.id, u = ui[id] || {}, e = env[id], texto = u.texto || '', limpio = texto.replace(/\s+/g, ' ').trim().slice(0, 600);
+      const enlace = /^https?:\/\//i.test(x.enlace || '') ? x.enlace : '';
+      const tipo = String(x.tipo || '').replace(/_/g, ' ');
+      return {
+        id, titulo: x.titulo || '(sin título)', empresa: x.empresa || '', portal: x.portal || '',
+        hayPuntaje: x.puntaje != null, puntaje: x.puntaje,
+        porQue: x.por_que || '', hayPorQue: !!x.por_que, brechas: x.brechas || '', hayBrechas: !!x.brechas,
+        enlace, hayEnlace: !!enlace, tipoTag: tipo && !/^postulaci/i.test(tipo) ? tipo.toUpperCase() : '',
+        color: e ? '#2378B5' : '#D8BE8A',
+        sent: !!e, pend: !e, sentTxt: e ? 'Elegiste «' + e.a + '». Si ya tocaste Submit, el agente la aplica en su próxima corrida.' : '',
+        urlAprobar: this.bandUrl(id, 'aprobar'), clickAprobar: () => this.marcarEnviada(id, 'aprobar'),
+        modoDesc: u.modo === 'descartar', modoEd: u.modo === 'editar',
+        descBg: u.modo === 'descartar' ? '#F7F1E7' : '#fff', descBd: u.modo === 'descartar' ? '#D8BE8A' : '#DCE2EA',
+        edBg: u.modo === 'editar' ? '#F7F1E7' : '#fff', edBd: u.modo === 'editar' ? '#D8BE8A' : '#DCE2EA',
+        toggleDesc: () => this.setBUi(id, { modo: u.modo === 'descartar' ? '' : 'descartar' }),
+        toggleEd: () => this.setBUi(id, { modo: u.modo === 'editar' ? '' : 'editar' }),
+        motivos: MOT.map(m => ({ label: m, url: this.bandUrl(id, 'descartar', 'motivo: ' + m), click: () => this.marcarEnviada(id, 'descartar') })),
+        texto, onTexto: ev => this.setBUi(id, { texto: ev.target.value }),
+        hayTexto: !!limpio, sinTexto: !limpio,
+        urlEditar: this.bandUrl(id, 'editar', 'texto: ' + limpio), clickEditar: () => this.marcarEnviada(id, 'editar'),
+        deshacer: () => this.quitarMarca(id)
+      };
+    });
+    const faltan = R.pendientes;
+    return {
+      isBand: S.tab === 'bandeja', bandItems: items, bandVacia: items.length === 0, bandHay: items.length > 0,
+      bandBadge: faltan > 0 ? String(faltan) : '',
+      bandTitulo: !items.length ? 'Todo al día' : faltan ? faltan + (faltan === 1 ? ' aviso por decidir' : ' avisos por decidir') : 'Todo enviado a GitHub',
+      bandSub: B.fecha ? 'Bandeja del ' + dm(B.fecha) + (R.enviadas ? ' · ' + R.enviadas + (R.enviadas === 1 ? ' ya enviada' : ' ya enviadas') + ' a GitHub' : '') : 'El agente deja una bandeja nueva cada día hábil.'
+    };
+  }
   setTab(k) { this.setState({ tab: k }); try { localStorage.setItem('mapaTabMovil', k); } catch (e) {} }
   tourSteps() { return [
     { z: 'map', t: 'Dónde estoy', x: 'El camino tiene 7 etapas. Tu foto marca el día de hoy; lo dorado es lo recorrido. Toca cualquier etapa para ver qué tiene que pasar para cumplirla.' },
@@ -436,12 +556,13 @@ class Component extends DCLogic {
   renderVals() {
     const b = this.baseVals(), S = this.state, D = this.eff();
     const dm = iso => { if (!iso) return ''; const [y, m, d] = iso.split('-'); return d + '/' + m + (y !== '2026' ? '/' + y.slice(2) : ''); };
-    const TM = [['hoy', 'Hoy', 'today'], ['mapa', 'Mapa', 'route'], ['caminos', 'Caminos', 'alt_route'], ['numeros', 'Números', 'monitoring'], ['mas', 'Más', 'more_horiz']];
+    const TM = [['hoy', 'Hoy', 'today'], ['bandeja', 'Bandeja', 'inbox'], ['mapa', 'Mapa', 'route'], ['caminos', 'Caminos', 'alt_route'], ['numeros', 'Números', 'monitoring'], ['mas', 'Más', 'more_horiz']];
     const IS = this.introSlides(), ii = S.intro;
     const closeIntro = () => { this.setState({ intro: -1 }); try { localStorage.setItem('mapaIntroMovil', '1'); } catch (e) {} setTimeout(() => this.checkCeleb(), 400); };
     const seg = S.seg || 'cal';
     const common = {
-      tabsM: TM.map(([k, l, ic]) => ({ label: l, icon: ic, fg: S.tab === k ? '#8C6A2E' : '#5A6472', pill: S.tab === k ? '#F7F1E7' : 'transparent', weight: S.tab === k ? '800' : '600', pick: () => { this.setTab(k); window.scrollTo({ top: 0 }); } })),
+      tabsM: TM.map(([k, l, ic]) => ({ label: l, icon: ic, badge: k === 'bandeja' ? this.bandejaVals(D).bandBadge : '', fg: S.tab === k ? '#8C6A2E' : '#5A6472', pill: S.tab === k ? '#F7F1E7' : 'transparent', weight: S.tab === k ? '800' : '600', pick: () => { this.setTab(k); window.scrollTo({ top: 0 }); } })),
+      ...this.bandejaVals(D),
       isHoy: S.tab === 'hoy' || !TM.some(x => x[0] === S.tab), isMapa: S.tab === 'mapa', isCam: S.tab === 'caminos', isNum: S.tab === 'numeros', isMas: S.tab === 'mas',
       segs: [['cal', 'Calendario'], ['pend', 'Pendientes']].map(([k, l]) => ({ label: l, bg: seg === k ? '#2C3E50' : 'transparent', fg: seg === k ? '#fff' : '#3C4552', pick: () => this.setState({ seg: k }, () => { if (k === 'cal') setTimeout(() => this.scrollCal(), 80); }) })),
       isCal: seg === 'cal', isPend: seg === 'pend',
@@ -543,13 +664,13 @@ class Component extends DCLogic {
     const hh = D.hacer_hoy || [];
     let firstOpen = -1;
     const tareas = hh.map((x, idx) => {
-      const k = x.orden + ':' + x.tipo, done = !!S.done[k];
+      const k = x.orden + ':' + x.tipo, esBand = x.tipo === 'revisar_bandeja', manual = !!S.done[k], done = manual || (esBand && this.bandResumen(D).todas);
       if (!done && firstOpen < 0) firstOpen = idx;
-      return { k, texto: x.texto, carril: (CARR[x.carril] || x.carril || '') + (x.segmento ? ' · ' + x.segmento : ''), icon: TIPO[x.tipo] || 'radio_button_unchecked', done, idx };
+      return { k, esBand, manual, texto: x.texto, carril: (CARR[x.carril] || x.carril || '') + (x.segmento ? ' · ' + x.segmento : '') + (esBand ? ' · toca para abrir la bandeja' : ''), icon: TIPO[x.tipo] || 'radio_button_unchecked', done, idx };
     }).map(x => {
       const first = x.idx === firstOpen;
       return { ...x, tag: x.done ? 'HECHO' : first ? 'LO PRIMERO' : 'DESPUÉS', bg: x.done ? '#F6F8FB' : first ? '#FBF7F0' : '#fff', bd: x.done ? '#E3E8EF' : first ? '#D8BE8A' : '#E3E8EF', chk: x.done ? '#8C6A2E' : '#B9C3CF', chkBg: x.done ? '#8C6A2E' : '#fff', deco: x.done ? 'line-through' : 'none', fg: x.done ? '#8B95A3' : '#1B2430',
-        toggle: () => { const nd = { ...this.state.done, [x.k]: !x.done }; this.setState({ done: nd }); try { localStorage.setItem('mapaHecho:' + D.hoy, JSON.stringify(nd)); } catch (e) {} } };
+        toggle: () => { if (x.esBand && !x.manual) { this.setTab('bandeja'); window.scrollTo({ top: 0 }); return; } const nd = { ...this.state.done, [x.k]: !x.done }; this.setState({ done: nd }); try { localStorage.setItem('mapaHecho:' + D.hoy, JSON.stringify(nd)); } catch (e) {} } };
     });
     const nDone = tareas.filter(x => x.done).length;
     const PLAN = this.plan(), hoyPlan = PLAN.find(p => p[0] === D.hoy);
