@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapa de búsqueda</title>
+<style>body{margin:0;background:#EEF2F6;font-family:system-ui,sans-serif;color:#1B2430}p{padding:24px 16px}a{color:#2378B5}</style>
+</head>
+<body>
+<p>Cargando el mapa…</p>
+<script>
+(function () {
+  var movil = window.matchMedia('(max-width: 767px)').matches;
+  location.replace((movil ? 'movil' : 'web') + '.html' + location.search + location.hash);
+})();
+</script>
+<noscript><p>Abre <a href="movil.html">la versión para celular</a> o <a href="web.html">la versión para computador</a>.</p></noscript>
+</body>
+</html>
