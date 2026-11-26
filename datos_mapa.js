@@ -1,8 +1,8 @@
 // Generado por actualizar.py. Sin datos de personas. Uso: <script src="datos_mapa.js"></script>
 window.DATOS_MAPA = {
-  "schema_version": 2,
-  "generado": "2026-11-25T20:03:46",
-  "hoy": "2026-11-25",
+  "schema_version": 3,
+  "generado": "2026-11-26T14:25:00",
+  "hoy": "2026-11-26",
   "proyecto": {
     "inicio": "2026-11-21",
     "meta_liquida_mensual": 600000,
@@ -133,20 +133,8 @@ window.DATOS_MAPA = {
     "bandejas_pendientes_en_archivos": 4
   },
   "bandeja": {
-    "fecha": "2026-11-25",
-    "items": [
-      {
-        "id": "li-4492838962",
-        "titulo": "Business Intelligence Architect",
-        "empresa": "Albemarle Corporation",
-        "portal": "linkedin",
-        "puntaje": 76,
-        "por_que": "área 35, modalidad 10, jornada 10, pago 6, requisitos 10, bono reciente 5",
-        "brechas": "SAP S/4HANA, SAP BusinessObjects y SAP Data Services (requisito central; no están en el maestro); jornada y modalidad sin dato",
-        "enlace": "https://www.linkedin.com/jobs/view/4492838962/",
-        "tipo": "postulación"
-      }
-    ]
+    "fecha": null,
+    "items": []
   },
   "indicadores": {
     "semana": {
@@ -210,7 +198,7 @@ window.DATOS_MAPA = {
   "proximo_hito": {
     "fecha": "2026-12-06",
     "nombre": "Meta de las 2 semanas",
-    "dias_restantes": 11,
+    "dias_restantes": 10,
     "metas": {
       "mensajes": 20,
       "conversaciones": 4,
@@ -269,5 +257,104 @@ window.DATOS_MAPA = {
       "orden": 2
     }
   ],
-  "avisos_cantidad": 0
+  "avisos_cantidad": 0,
+  "estado_postulaciones": {
+    "enviadas_hoy": 0,
+    "enviadas_semana": 0,
+    "entrevistas": 0,
+    "requieren_accion": 0,
+    "por_estado": {
+      "en_bandeja": 1,
+      "aprobada": 0,
+      "descartada": 2,
+      "kit_enviado": 0,
+      "enviada": 0,
+      "respuesta": 0,
+      "entrevista": 0,
+      "oferta": 0,
+      "rechazo": 0,
+      "sin_respuesta": 0,
+      "cerrada": 0,
+      "en_cola": 0,
+      "enviando": 0,
+      "seco_ok": 0,
+      "requiere_accion": 0,
+      "error": 0
+    }
+  },
+  "busqueda": {
+    "actualizado": "2026-11-26T12:04:11",
+    "alarmas_recientes": 1,
+    "fuentes": [
+      {
+        "fuente": "chiletrabajos",
+        "modo": "anonima",
+        "ultima_corrida": "2026-11-26T12:04:06",
+        "leidos": 113,
+        "nuevos": 1,
+        "estado": "ok",
+        "pausa_hasta": null,
+        "motivo": ""
+      },
+      {
+        "fuente": "getonboard",
+        "modo": "anonima",
+        "ultima_corrida": "2026-11-26T12:00:44",
+        "leidos": 574,
+        "nuevos": 0,
+        "estado": "ok",
+        "pausa_hasta": null,
+        "motivo": ""
+      },
+      {
+        "fuente": "indeed",
+        "modo": "conector",
+        "ultima_corrida": null,
+        "leidos": 0,
+        "nuevos": 0,
+        "estado": "sin_correr",
+        "pausa_hasta": null,
+        "motivo": ""
+      },
+      {
+        "fuente": "laborum",
+        "modo": "anonima",
+        "ultima_corrida": "2026-11-26T12:04:08",
+        "leidos": 17510,
+        "nuevos": 0,
+        "estado": "ok",
+        "pausa_hasta": null,
+        "motivo": ""
+      },
+      {
+        "fuente": "linkedin",
+        "modo": "anonima",
+        "ultima_corrida": "2026-11-26T11:29:48",
+        "leidos": 0,
+        "nuevos": 0,
+        "estado": "pausada",
+        "pausa_hasta": "2026-11-27T11:29:57",
+        "motivo": "límite de pedidos (429)"
+      },
+      {
+        "fuente": "trabajando",
+        "modo": "anonima",
+        "ultima_corrida": "2026-11-26T12:03:10",
+        "leidos": 200,
+        "nuevos": 15,
+        "estado": "ok",
+        "pausa_hasta": null,
+        "motivo": ""
+      }
+    ]
+  },
+  "cifrado": {
+    "formato": 1,
+    "algoritmo": "AES-256-GCM",
+    "kdf": "PBKDF2-SHA256",
+    "iteraciones": 600000,
+    "sal": "MfKDuhGTtXxRLKqzCGbnaA==",
+    "iv": "dpsWsDpz0XgsTEPe",
+    "datos": "SVYqVdmE1fLfYyI/aTF0mOpYVcjh3JVdhLfVEFXKu2un5AAdMpDBdqbWd5mWCePXhWrEzkFQrdLWtql1EBiRY/qenuOZIgE5Qz8XFB+j+XCUps0zCjAPmWNhONyHtnHHLkp3tVZsLbvZe4GlhR2Rq3sJfu1A21KQB2MSGMAft60RhHPxYhcX4W84L5QB3azH1SqBDDdnfCO3l4VxijShrNMe099LwICN6mIMpltYBermeDZOmJucVqS1gFN0AyOU8rxoJG8Q1yclkF8J1mRWyTN7f/vveb+OyPkitgm9cVq5ZFRbD4VV2ZhDlQ4Ame8M89NDW4qRm6rdGolgY2o2Dl5yw/bq8JkAtcLajt2Cc472TYjAD9KuQ3U36WRkSW0Tz9GJfunkE/Ef2w76A7hr57v4lUYf3qr4pMEGnmw23RwENgQenfa4N3njrzRfsBNYAPa0PvSj8HR/Vv8JNaNwBYWORvjvqBzVsyCuI/fyr/LdnvLESxMKbhBOKz/4Pn9CtfGv1tKZKulqhVmsVu5dGkY8jHywVYrYyDeWa5ZfRSShJZ48UpTGk8l2OLxaMJ+7+UAkcZ1szKuMC2QWUfQBDAtos91HsdoW9u9RvGkFOhI9iL2ibIrxK0XSe0KeLP/vQkUQ6622BlxYnv4VRGwcfKDenl4aSaMl/bWdjsdX667Pb+g9Z7UFcrqb3rO/ne4v3hu/EWKT+qZNVuueyUgWSOcfTtUxbocQ7mH448I3LzqI3D+RP5AZFG3ZoHYyGblVFNZ8fwDJDD7sKaFuEOjXUOKBSipgTej2ROer19+4Dvz9CjYm1lAnYBK3L3H+YEW0V6WwodbqMCXphzMQB9J5nOfJbYXRYGagKdcLbr5vkNMeVBvrqrXrtq7Y6zSjiiZFe9BG5uXTY7k1o0VkBsm8SQLuT9P3J1MYVvGFRWt9/wUaU85sw+QgtaOSDSj1IDYY7kc4UTtAAy26HiPPV/ykSjgzBlhXsQx8DZa4f5J4C1smTJEgSF5VTLYNI1+7sB8yW/TAhOjKmukuwmpfk3XEW3tXSDs5I+IWwIjSGctJUDgTgvTk/s771HGClZ//39d+jSReJ9EKQ+jzE3237UcKOs2luuLxzww55lj/2O3cvHpI6vUwFOXfwFRd6PTwyPgYKSwH29F40YTS+ppD1yAevoOdGgGsotoI5ibye0CQZHNBZZo1uZbsGpbIsTu8rcBIx3jGxOA/2QAtvurkmvbhmGpue4qtGLFinKgNp1HXZzSx3+LEJx/6m9WO5cyyNLoxrx15GOvJ010nMk5FLcCo0ZjXnqMx3NX1mSWvxb907L7WGOUy3Zs4brUX8D9eEXjSZhhSFGU/E1q0nS1GZ698QOLjAvz+78TlmMBOLMXFogjjk/0x1PK5uqjEJ5Uao7JukcCQptkzxzljqC37if1+ID8UEu29CO47HFvty/SxZs47nV8cCva0dUNmZZx7QCImEYWFFUjmY3m1MWnqzNM7hJ7gbwL6Y8TmHCzJtuYTAk/P6eEnw0VSJx6K03nO0N8E8q1yq9ZMMO1c32n9s+ZZuDQ0TKLNG1o/fWGdo6u1coR4VWyvkIE0rakMGzVQLYzHsocCBh1xdR+9gUlnsOsQFcAuciSVR2AgWdVHRg5/OluhYxDH6ibl1mwKJyrGK5g3xW9OuGlrwMWcYprElXbG48eWLvJytx2tZBfMoaw3DzC2AY7EOBsbt6CXjGTMpfeDEjYyOZzOhDQgkJtv2HkjhPIOp/zbD3oUSsYe8OW9x3FYRbFJfBdZ4E9pOoHXsOTsSQKeEgaF6bFGF/hPW9IvRYDNyb5Y9g1l8koGfQ=="
+  }
 };
