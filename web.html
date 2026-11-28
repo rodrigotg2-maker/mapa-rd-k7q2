@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com/react@18.3.1/ https://unpkg.com/react-dom@18.3.1/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 </head>
@@ -70,7 +71,7 @@ a:hover{text-decoration:underline}
 </svg>
 <sc-for list="{{ estaciones }}" as="s" hint-placeholder-count="7">
 <div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:0;height:0;z-index:2">
-<sc-if value="{{ s.esMeta }}"><div style="position:absolute;left:0;bottom:92px;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:5px;background:#D8BE8A;color:#2C3E50;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 9px;border-radius:999px;animation:mpGlow 2.4s ease-in-out infinite"><span style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1">flag</span>META $600.000</div></sc-if>
+<sc-if value="{{ s.esMeta }}"><div style="position:absolute;left:0;bottom:92px;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:5px;background:#D8BE8A;color:#2C3E50;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 9px;border-radius:999px;animation:mpGlow 2.4s ease-in-out infinite"><span style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1">flag</span>META MENSUAL</div></sc-if>
 <button onClick="{{ s.pick }}" title="{{ s.nombre }}" style="position:absolute;left:-23px;top:-23px;width:46px;height:46px;border-radius:50%;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font:800 16px/1 'Figtree',sans-serif;border:{{ s.border }};background:{{ s.bg }};color:{{ s.fg }};box-shadow:{{ s.ring }};animation:mpPop .55s cubic-bezier(.2,.9,.3,1.3) backwards;animation-delay:{{ s.delay }};transition:transform .2s,box-shadow .2s" style-hover="transform:scale(1.12)">
 <sc-if value="{{ s.isActual }}"><span style="position:absolute;inset:-3px;border-radius:50%;border:2px solid #D8BE8A;animation:mpPulse 1.8s ease-out infinite"></span></sc-if>
 <span style="font-family:{{ s.font }};font-size:{{ s.fs }};line-height:1">{{ s.glyph }}</span>
@@ -176,17 +177,29 @@ a:hover{text-decoration:underline}
 
 <sc-if value="{{ isBand }}">
 <div style="display:flex;flex-direction:column;gap:14px;animation:mpIn .45s ease backwards">
+<sc-if value="{{ isLista }}">
 <div style="background:#2C3E50;color:#fff;border-radius:18px;padding:16px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px">
 <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#D8BE8A">BANDEJA DEL AGENTE</span><span style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.2">{{ bandTitulo }}</span><span style="font-size:13px;color:#AEBBCA">{{ bandSub }}</span></div>
 <sc-if value="{{ bandHay }}"><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.4;color:#E4EAF1;max-width:420px"><span style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;color:#D8BE8A">open_in_new</span><span>Se abre GitHub: toca <strong>Submit</strong> para guardar la decisión.</span></div></sc-if>
 </div>
+</sc-if>
+<sc-if value="{{ lockOn }}">
+<div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;border-top:5px solid #D8BE8A;gap:12px;max-width:560px;width:100%;margin:0 auto">
+<div style="display:flex;gap:12px;align-items:center"><span style="width:44px;height:44px;flex:none;border-radius:50%;background:#2C3E50;color:#D8BE8A;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:23px;line-height:1">lock</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:16px;font-weight:800;line-height:1.25">Datos protegidos</span><span style="font-size:13px;line-height:1.4;color:#5A6472">Escribe tu frase una sola vez. Este navegador guarda la clave, no la frase.</span></div></div>
+<input type="password" value="{{ lockFrase }}" onChange="{{ onFrase }}" onKeyDown="{{ lockKey }}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tu frase" aria-label="Frase del panel" style="width:100%;box-sizing:border-box;border:1.5px solid #DCE2EA;border-radius:12px;padding:12px;font:500 16px/1.4 'Figtree',sans-serif;color:#1B2430;background:#fff">
+<sc-if value="{{ lockCorta }}"><span style="font-size:12.5px;line-height:1.4;color:#8C6A2E">La frase debe tener al menos 16 caracteres.</span></sc-if>
+<sc-if value="{{ hayLockErr }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#FBE9EC;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.4;color:#B3263A"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">error</span><span>{{ lockErr }}</span></div></sc-if>
+<button onClick="{{ lockEntrar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">lock_open</span>{{ lockBtn }}</button>
+</div>
+</sc-if>
+<sc-if value="{{ isLista }}">
 <sc-if value="{{ bandVacia }}"><div style="background:#fff;border-radius:18px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center"><span style="width:60px;height:60px;border-radius:50%;background:#F7F1E7;color:#8C6A2E;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:32px;line-height:1">inbox</span><span style="font-size:17px;font-weight:800">No hay avisos por decidir</span><span style="font-size:13.5px;line-height:1.45;color:#5A6472;max-width:480px;text-wrap:pretty">Cuando el agente deje una bandeja nueva, los avisos aparecen aquí para aprobarlos, descartarlos o editarlos.</span></div></sc-if>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:14px;align-items:start">
 <sc-for list="{{ bandItems }}" as="it" hint-placeholder-count="3">
 <div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;border-top:5px solid {{ it.color }};box-sizing:border-box;min-width:0">
 <div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between">
 <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
-<sc-if value="{{ it.tipoTag }}"><span style="align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:999px;background:#EEF1F5;color:#3C4552">{{ it.tipoTag }}</span></sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-if value="{{ it.hayModo }}"><span style="align-self:flex-start;display:inline-flex;gap:4px;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:{{ it.modoBg }};color:{{ it.modoFg }}"><span style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1">{{ it.modoIcon }}</span>{{ it.modoTxt }}</span></sc-if><sc-if value="{{ it.tipoTag }}"><span style="align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:999px;background:#EEF1F5;color:#3C4552">{{ it.tipoTag }}</span></sc-if></div>
 <span style="font-size:16.5px;font-weight:800;line-height:1.25;text-wrap:pretty">{{ it.titulo }}</span>
 <span style="font-size:13.5px;color:#3C4552;line-height:1.35">{{ it.empresa }}</span>
 <span style="display:flex;gap:5px;align-items:center;font-size:12px;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">work</span>{{ it.portal }}</span>
@@ -195,14 +208,18 @@ a:hover{text-decoration:underline}
 </div>
 <sc-if value="{{ it.hayPorQue }}"><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#8C6A2E">POR QUÉ CALZA</span><span style="font-size:13.5px;line-height:1.45;color:#1B2430;text-wrap:pretty">{{ it.porQue }}</span></div></sc-if>
 <sc-if value="{{ it.hayBrechas }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#F7F1E7;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5C4A26"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;color:#8C6A2E;line-height:1.1">info</span><span><strong>Brechas:</strong> {{ it.brechas }}</span></div></sc-if>
+<sc-if value="{{ it.hayCv }}"><div style="display:flex;gap:8px;align-items:center;font-size:13px;line-height:1.35;color:#3C4552"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;color:#8C6A2E;flex:none">description</span><span style="min-width:0;overflow-wrap:anywhere"><strong>CV:</strong> {{ it.cv }}</span></div></sc-if>
+<sc-if value="{{ it.hayMsg }}"><div style="display:flex;flex-direction:column;gap:8px"><button onClick="{{ it.toggleMsg }}" style="align-self:flex-start;min-height:44px;padding:0 4px;border:0;background:transparent;color:#1D4E73;font:800 13.5px/1 'Figtree',sans-serif;display:flex;align-items:center;gap:4px;cursor:pointer"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">chat</span>{{ it.msgTxt }}</button><sc-if value="{{ it.verMsg }}"><div style="background:#F6F8FB;border-radius:12px;padding:12px;font-size:13.5px;line-height:1.5;color:#1B2430;white-space:pre-wrap;text-wrap:pretty;animation:mpIn .25s ease backwards">{{ it.mensaje }}</div></sc-if></div></sc-if>
 <sc-if value="{{ it.hayEnlace }}"><a href="{{ it.enlace }}" target="_blank" rel="noopener noreferrer" style="min-height:44px;border-radius:12px;background:#EBF4FA;color:#1D4E73;text-decoration:none;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Ver aviso</a></sc-if>
+<sc-if value="{{ it.sinRef }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#EEF1F5;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">block</span><span><strong>Falta ref:</strong> no se puede decidir este aviso desde el panel. Avísale al agente para que regenere los datos.</span></div></sc-if>
 <sc-if value="{{ it.pend }}">
 <div style="display:flex;flex-direction:column;gap:8px">
 <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
-<a href="{{ it.urlAprobar }}" target="_blank" rel="noopener noreferrer" onClick="{{ it.clickAprobar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">check</span>Aprobar</a>
+<a href="{{ it.urlAprobar }}" target="_blank" rel="noopener noreferrer" onClick="{{ it.clickAprobar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">send</span>Postular</a>
 <button onClick="{{ it.toggleDesc }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid {{ it.descBd }};background:{{ it.descBg }};color:#3C4552;font-family:'Figtree',sans-serif" style-active="transform:scale(.97)" style-hover="border-color:#8C6A2E"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">close</span>Descartar</button>
 <button onClick="{{ it.toggleEd }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid {{ it.edBd }};background:{{ it.edBg }};color:#3C4552;font-family:'Figtree',sans-serif" style-active="transform:scale(.97)" style-hover="border-color:#8C6A2E"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">edit</span>Editar</button>
 </div>
+<sc-if value="{{ it.esAsistida }}"><span style="font-size:12.5px;line-height:1.4;color:#5A6472">Asistida: te llega un kit y envías tú.</span></sc-if>
 <sc-if value="{{ it.modoDesc }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F6F8FB;border-radius:12px;padding:12px;animation:mpIn .25s ease backwards">
 <span style="font-size:13px;font-weight:700;line-height:1.35">¿Por qué lo descartas? Un toque abre GitHub.</span>
 <div style="display:flex;flex-wrap:wrap;gap:8px">
@@ -210,10 +227,9 @@ a:hover{text-decoration:underline}
 </div>
 </div></sc-if>
 <sc-if value="{{ it.modoEd }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F6F8FB;border-radius:12px;padding:12px;animation:mpIn .25s ease backwards">
-<span style="font-size:13px;font-weight:700;line-height:1.35">¿Qué hay que cambiar? Escríbelo y se abre GitHub.</span>
-<textarea value="{{ it.texto }}" onChange="{{ it.onTexto }}" rows="3" maxLength="600" placeholder="Por ejemplo: cambia el saludo y nombra Power BI" style="width:100%;box-sizing:border-box;border:1.5px solid #DCE2EA;border-radius:12px;padding:10px 12px;font:500 15px/1.4 'Figtree',sans-serif;color:#1B2430;background:#fff;resize:vertical"></textarea>
-<sc-if value="{{ it.hayTexto }}"><a href="{{ it.urlEditar }}" target="_blank" rel="noopener noreferrer" onClick="{{ it.clickEditar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Abrir GitHub con la edición</a></sc-if>
-<sc-if value="{{ it.sinTexto }}"><span style="min-height:44px;border-radius:12px;background:#EEF1F5;color:#8B95A3;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center">Escribe el cambio para continuar</span></sc-if>
+<span style="font-size:13px;font-weight:700;line-height:1.35">Los cambios al mensaje se piden por Telegram.</span>
+<div style="display:flex;gap:8px;align-items:flex-start;background:#F7F1E7;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5C4A26"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1">lock</span><span>Este panel es público y no manda texto libre a GitHub. Escríbele al bot, con este código:</span></div>
+<sc-if value="{{ it.puedeEditarTg }}"><div style="display:flex;gap:8px;align-items:center"><code style="flex:1;min-width:0;overflow-wrap:anywhere;background:#fff;border:1.5px solid #DCE2EA;border-radius:10px;padding:10px 12px;font:600 13px/1.4 monospace;color:#1B2430">{{ it.cmdEdito }}</code><button onClick="{{ it.copiarEdito }}" style="min-height:44px;padding:0 14px;border-radius:12px;border:0;background:#2C3E50;color:#fff;font:800 14px/1 'Figtree',sans-serif;cursor:pointer">{{ it.copiarEditoTxt }}</button></div></sc-if>
 </div></sc-if>
 </div>
 </sc-if>
@@ -224,6 +240,105 @@ a:hover{text-decoration:underline}
 </div>
 </sc-for>
 </div>
+<sc-if value="{{ hayAprob }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 4px 0"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E">APROBADAS, AÚN SIN ENVIAR</span><span style="font-size:12.5px;color:#5A6472">{{ aprobCuenta }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:14px;align-items:start">
+<sc-for list="{{ aprob }}" as="ap" hint-placeholder-count="2">
+<div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;border-top:5px solid {{ ap.color }};gap:10px">
+<div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="align-self:flex-start;display:inline-flex;gap:4px;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:{{ ap.modoBg }};color:{{ ap.modoFg }}"><span style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1">{{ ap.modoIcon }}</span>{{ ap.modoTxt }}</span><span style="font-size:15.5px;font-weight:800;line-height:1.25;text-wrap:pretty">{{ ap.titulo }}</span><span style="font-size:13.5px;color:#3C4552;line-height:1.35">{{ ap.empresa }}</span><span style="display:flex;gap:5px;align-items:center;font-size:12px;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">work</span>{{ ap.portal }}</span></div><span style="flex:none;font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:999px;background:{{ ap.estBg }};color:{{ ap.estFg }}">{{ ap.estadoTxt }}</span></div>
+<sc-if value="{{ ap.sinRef }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#EEF1F5;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">block</span><span><strong>Falta ref:</strong> no se puede decidir este aviso desde el panel. Avísale al agente para que regenere los datos.</span></div></sc-if>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px"><sc-if value="{{ ap.puedeReintentar }}"><a href="{{ ap.urlReintentar }}" target="_blank" rel="noopener noreferrer" onClick="{{ ap.clickReintentar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid #DCE2EA;background:#fff;color:#3C4552;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">refresh</span>Reintentar</a></sc-if><sc-if value="{{ ap.puedeCancelar }}"><a href="{{ ap.urlCancelar }}" target="_blank" rel="noopener noreferrer" onClick="{{ ap.clickCancelar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid #DCE2EA;background:#fff;color:#3C4552;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">undo</span>Cancelar</a></sc-if></div>
+<sc-if value="{{ ap.sent }}"><div style="display:flex;flex-direction:column;gap:8px;background:#EBF4FA;border-radius:12px;padding:12px;color:#1D4E73"><div style="display:flex;gap:8px;align-items:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;color:#2378B5;flex:none">cloud_upload</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong style="font-size:14px">Enviada a GitHub, falta confirmar</strong><span style="font-size:12.5px;line-height:1.4">{{ ap.sentTxt }}</span></div></div><button onClick="{{ ap.deshacer }}" style="min-height:44px;border:1px solid #B9D3E6;border-radius:12px;background:#fff;color:#1D4E73;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">No llegué a tocar Submit</button></div></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ hayKits }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 4px 0"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E">PARA POSTULAR A MANO</span><span style="font-size:12.5px;color:#5A6472">{{ kitsCuenta }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:14px;align-items:start">
+<sc-for list="{{ kitsLista }}" as="kt" hint-placeholder-count="2">
+<div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;border-top:5px solid #D8BE8A;gap:10px">
+<div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="align-self:flex-start;display:inline-flex;gap:4px;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:{{ kt.modoBg }};color:{{ kt.modoFg }}"><span style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1">{{ kt.modoIcon }}</span>{{ kt.modoTxt }}</span><span style="font-size:15.5px;font-weight:800;line-height:1.25;text-wrap:pretty">{{ kt.titulo }}</span><span style="font-size:13.5px;color:#3C4552;line-height:1.35">{{ kt.empresa }}</span><span style="display:flex;gap:5px;align-items:center;font-size:12px;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">work</span>{{ kt.portal }}</span></div><sc-if value="{{ kt.hayPuntaje }}"><div style="flex:none;display:flex;flex-direction:column;align-items:center;background:#F7F1E7;border-radius:12px;padding:6px 10px"><span style="font-size:20px;font-weight:800;color:#8C6A2E;font-variant-numeric:tabular-nums;line-height:1.1">{{ kt.puntaje }}</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#8C6A2E">PUNTOS</span></div></sc-if></div>
+<sc-if value="{{ kt.hecho }}"><div style="display:flex;gap:8px;align-items:center;background:#EBF4FA;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.4;color:#1D4E73"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">cloud_upload</span><span>Marcada como postulada, falta confirmar en GitHub</span></div></sc-if>
+<sc-if value="{{ kt.sinRef }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#EEF1F5;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">block</span><span><strong>Falta ref:</strong> no se puede decidir este aviso desde el panel. Avísale al agente para que regenere los datos.</span></div></sc-if>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px"><button onClick="{{ kt.abrir }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">assignment</span>Abrir kit</button><sc-if value="{{ kt.puedeCancelar }}"><a href="{{ kt.urlCancelar }}" target="_blank" rel="noopener noreferrer" onClick="{{ kt.clickCancelar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid #DCE2EA;background:#fff;color:#3C4552;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">undo</span>Cancelar</a></sc-if></div>
+<sc-if value="{{ kt.cancelada }}"><div style="display:flex;flex-direction:column;gap:8px;background:#EBF4FA;border-radius:12px;padding:12px;color:#1D4E73"><span style="font-size:13px;line-height:1.4">Elegiste «cancelar». Si ya tocaste Submit, el agente lo aplica en su próxima corrida.</span><button onClick="{{ kt.deshacerCancelar }}" style="min-height:44px;border:1px solid #B9D3E6;border-radius:12px;background:#fff;color:#1D4E73;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">No llegué a tocar Submit</button></div></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</sc-if>
+<sc-if value="{{ isKitVista }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:mpIn .3s ease backwards;max-width:760px;width:100%;margin:0 auto;box-sizing:border-box">
+<button onClick="{{ kitVolver }}" style="align-self:flex-start;min-height:44px;padding:0 14px 0 8px;border:0;background:transparent;color:#1D4E73;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;gap:4px;cursor:pointer"><span style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1">arrow_back</span>Volver a la bandeja</button>
+<div style="background:#2C3E50;color:#fff;border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#D8BE8A">KIT PARA POSTULAR A MANO</span><span style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.2;text-wrap:balance">{{ kitTitulo }}</span><span style="font-size:14px;color:#DCE3EB;line-height:1.35">{{ kitEmpresa }}</span><span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#AEBBCA"><span style="display:flex;gap:5px;align-items:center"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">work</span>{{ kitPortal }}</span><span style="align-self:flex-start;display:inline-flex;gap:4px;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:{{ kitModoBg }};color:{{ kitModoFg }}"><span style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1">{{ kitModoIcon }}</span>{{ kitModoTxt }}</span></span></div>
+<sc-if value="{{ kitNoEsta }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0"><span style="font-size:15px;font-weight:800">No encontré el kit de este aviso</span><span style="font-size:13.5px;line-height:1.45;color:#5A6472">Puede que el agente ya lo haya cerrado. Vuelve a la bandeja.</span></div></sc-if>
+<sc-if value="{{ kitHay }}">
+<div style="display:flex;gap:8px;align-items:flex-start;background:#EBF4FA;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.4;color:#1D4E73"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;flex:none">info</span><span>Abre la oferta, postula con tu cuenta y pega las respuestas. Al terminar, toca <strong>Ya postulé</strong>.</span></div>
+<sc-if value="{{ kitHayEnlace }}"><a href="{{ kitEnlace }}" target="_blank" rel="noopener noreferrer" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Abrir la oferta</a></sc-if>
+<sc-if value="{{ kitHayCv }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;flex-direction:row;align-items:center;justify-content:space-between;gap:10px"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#8C6A2E">CV QUE SE USA</span><span style="font-size:14.5px;font-weight:700;line-height:1.3;overflow-wrap:anywhere">{{ kitCv }}</span></div><button onClick="{{ kitCopiarCv }}" style="min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid #DCE2EA;background:#fff;color:#1B2430;box-sizing:border-box;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;flex:none;transition-property:transform;transition-duration:.12s" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1">content_copy</span>{{ kitCvTxt }}</button></div></sc-if>
+<sc-if value="{{ kitHayMensaje }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;gap:8px"><span style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#8C6A2E">MENSAJE</span><span style="font-size:14px;line-height:1.5;color:#1B2430;white-space:pre-wrap;text-wrap:pretty">{{ kitMensaje }}</span><button onClick="{{ kitCopiarMsg }}" style="min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid #DCE2EA;background:#fff;color:#1B2430;box-sizing:border-box;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;flex:none;transition-property:transform;transition-duration:.12s;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1">content_copy</span>{{ kitMsgTxt }}</button></div></sc-if>
+<sc-if value="{{ kitHayResp }}"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E;padding:4px 4px 0">RESPUESTAS PARA EL FORMULARIO</span></sc-if>
+<sc-for list="{{ kitRespuestas }}" as="rp" hint-placeholder-count="3"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;gap:8px"><span style="font-size:13px;font-weight:700;line-height:1.4;color:#3C4552;text-wrap:pretty">{{ rp.pregunta }}</span><span style="font-size:14.5px;line-height:1.45;color:#1B2430;white-space:pre-wrap;text-wrap:pretty">{{ rp.respuesta }}</span><button onClick="{{ rp.copiar }}" style="min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid #DCE2EA;background:#fff;color:#1B2430;box-sizing:border-box;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;flex:none;transition-property:transform;transition-duration:.12s;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1">content_copy</span>{{ rp.txt }}</button></div></sc-for>
+<sc-if value="{{ kitSinRef }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#EEF1F5;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.4;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">block</span><span><strong>Falta ref:</strong> no se puede decidir este aviso desde el panel. Avísale al agente para que regenere los datos.</span></div></sc-if>
+<sc-if value="{{ kitPend }}"><a href="{{ kitUrlYa }}" target="_blank" rel="noopener noreferrer" onClick="{{ kitClickYa }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%;min-height:52px;font-size:15px" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">check_circle</span>Ya postulé</a></sc-if>
+<sc-if value="{{ kitPuedeCancelar }}"><a href="{{ kitUrlCancelar }}" target="_blank" rel="noopener noreferrer" onClick="{{ kitClickCancelar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:1.5px solid #DCE2EA;background:#fff;color:#3C4552;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">undo</span>Cancelar este kit</a></sc-if>
+<sc-if value="{{ kitHecho }}"><div style="display:flex;flex-direction:column;gap:8px;background:#EBF4FA;border-radius:12px;padding:12px;color:#1D4E73"><div style="display:flex;gap:8px;align-items:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;color:#2378B5;flex:none">cloud_upload</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong style="font-size:14px">Enviada a GitHub, falta confirmar</strong><span style="font-size:12.5px;line-height:1.4">Elegiste «Ya postulé». Si ya tocaste Submit, el agente la marca como enviada en su próxima corrida.</span></div></div><button onClick="{{ kitDeshacer }}" style="min-height:44px;border:1px solid #B9D3E6;border-radius:12px;background:#fff;color:#1D4E73;font:700 13.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">No llegué a tocar Submit</button></div></sc-if>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ abierto }}"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 4px;font-size:12.5px;color:#5A6472"><span style="display:flex;gap:6px;align-items:center"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">lock_open</span>Datos descifrados en este navegador</span><button onClick="{{ olvidar }}" style="min-height:44px;padding:0 14px;border:1px solid #DCE2EA;border-radius:10px;background:#fff;color:#3C4552;font:700 12.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">Olvidar clave</button></div></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isEstado }}">
+<div style="display:flex;flex-direction:column;gap:14px;animation:mpIn .45s ease backwards">
+<div style="background:#2C3E50;color:#fff;border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#D8BE8A">ESTADO DE LAS POSTULACIONES</span><span style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.2;text-wrap:balance">{{ estTitulo }}</span><span style="font-size:13px;color:#AEBBCA;line-height:1.4">{{ estSub }}</span></div>
+<sc-if value="{{ hayReq }}"><div style="display:flex;gap:10px;align-items:center;background:#FBE9EC;color:#B3263A;border-radius:14px;padding:12px 14px"><span style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;flex:none">priority_high</span><strong style="font-size:14px;line-height:1.3">{{ reqTxt }}</strong></div></sc-if>
+<sc-if value="{{ hayEP }}"><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px"><div style="background:#fff;border-radius:16px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;box-sizing:border-box"><span style="font-size:28px;font-weight:800;line-height:1.1;color:#2C3E50;font-variant-numeric:tabular-nums">{{ cntHoy }}</span><span style="font-size:12.5px;color:#5A6472">Enviadas hoy</span></div><div style="background:#fff;border-radius:16px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;box-sizing:border-box"><span style="font-size:28px;font-weight:800;line-height:1.1;color:#2C3E50;font-variant-numeric:tabular-nums">{{ cntSemana }}</span><span style="font-size:12.5px;color:#5A6472">Esta semana</span></div><div style="background:#fff;border-radius:16px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;box-sizing:border-box"><span style="font-size:28px;font-weight:800;line-height:1.1;color:#2C3E50;font-variant-numeric:tabular-nums">{{ cntEntrev }}</span><span style="font-size:12.5px;color:#5A6472">Entrevistas</span></div></div></sc-if>
+<sc-if value="{{ hayChips }}"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ estChips }}" as="ch"><span style="display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;background:{{ ch.bg }};color:{{ ch.fg }}">{{ ch.label }}<strong style="font-variant-numeric:tabular-nums">{{ ch.n }}</strong></span></sc-for></div></sc-if>
+<sc-if value="{{ lockOn }}">
+<div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;border-top:5px solid #D8BE8A;gap:12px;max-width:560px;width:100%;margin:0 auto">
+<div style="display:flex;gap:12px;align-items:center"><span style="width:44px;height:44px;flex:none;border-radius:50%;background:#2C3E50;color:#D8BE8A;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:23px;line-height:1">lock</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:16px;font-weight:800;line-height:1.25">Datos protegidos</span><span style="font-size:13px;line-height:1.4;color:#5A6472">Escribe tu frase una sola vez. Este navegador guarda la clave, no la frase.</span></div></div>
+<input type="password" value="{{ lockFrase }}" onChange="{{ onFrase }}" onKeyDown="{{ lockKey }}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tu frase" aria-label="Frase del panel" style="width:100%;box-sizing:border-box;border:1.5px solid #DCE2EA;border-radius:12px;padding:12px;font:500 16px/1.4 'Figtree',sans-serif;color:#1B2430;background:#fff">
+<sc-if value="{{ lockCorta }}"><span style="font-size:12.5px;line-height:1.4;color:#8C6A2E">La frase debe tener al menos 16 caracteres.</span></sc-if>
+<sc-if value="{{ hayLockErr }}"><div style="display:flex;gap:8px;align-items:flex-start;background:#FBE9EC;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.4;color:#B3263A"><span style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;flex:none">error</span><span>{{ lockErr }}</span></div></sc-if>
+<button onClick="{{ lockEntrar }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">lock_open</span>{{ lockBtn }}</button>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:4px 4px 0"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E">TODAS LAS POSTULACIONES</span><span style="font-size:12.5px;color:#5A6472">{{ estListaCuenta }}</span></div>
+<sc-if value="{{ estListaVacia }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;align-items:center;text-align:center"><span style="font-size:15px;font-weight:800">Todavía no hay postulaciones</span><span style="font-size:13.5px;line-height:1.45;color:#5A6472">Cuando apruebes avisos, aparecen aquí con su estado.</span></div></sc-if>
+<sc-for list="{{ estLista }}" as="po" hint-placeholder-count="4">
+<div style="background:#fff;border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;box-sizing:border-box;min-width:0">
+<div style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:14.5px;font-weight:800;line-height:1.25;text-wrap:pretty">{{ po.titulo }}</span><span style="font-size:13px;color:#3C4552;line-height:1.35">{{ po.empresa }}</span></div><span style="flex:none;font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:999px;background:{{ po.estBg }};color:{{ po.estFg }}">{{ po.estadoTxt }}</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;color:#5A6472"><span style="display:flex;gap:4px;align-items:center"><span style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1">work</span>{{ po.portal }}</span><span style="align-self:flex-start;display:inline-flex;gap:4px;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:{{ po.modoBg }};color:{{ po.modoFg }}"><span style="font-family:'Material Symbols Rounded';font-size:12px;line-height:1">{{ po.modoIcon }}</span>{{ po.modoTxt }}</span><sc-if value="{{ po.hayPuntaje }}"><span><strong style="color:#8C6A2E">{{ po.puntaje }}</strong> puntos</span></sc-if><sc-if value="{{ po.hayFecha }}"><span>{{ po.fecha }}</span></sc-if></div>
+<sc-if value="{{ po.hayEnlace }}"><a href="{{ po.enlace }}" target="_blank" rel="noopener noreferrer" style="min-height:44px;border-radius:12px;background:#EBF4FA;color:#1D4E73;text-decoration:none;box-sizing:border-box;font:700 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">open_in_new</span>Ver aviso</a></sc-if>
+<sc-if value="{{ po.esKit }}"><button onClick="{{ po.abrirKit }}" style="min-height:44px;border-radius:12px;box-sizing:border-box;font:800 14px/1 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition-property:transform,background-color,border-color;transition-duration:.12s;border:0;background:#2C3E50;color:#fff;text-decoration:none;width:100%;min-height:44px" style-active="transform:scale(.97)"><span style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1">assignment</span>Abrir kit</button></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:4px 4px 0"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E">BÚSQUEDA</span><span style="font-size:12.5px;color:#5A6472">{{ busqAct }}</span></div>
+<sc-if value="{{ busqHay }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;gap:0;padding:4px 14px">
+<sc-for list="{{ busqFuentes }}" as="fu" hint-placeholder-count="5"><div style="display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid #EEF1F5">
+<div style="display:flex;gap:10px;align-items:center;justify-content:space-between"><div style="display:flex;gap:8px;align-items:baseline;min-width:0;flex-wrap:wrap"><span style="font-size:15px;font-weight:800">{{ fu.nombre }}</span><span style="font-size:12px;color:#5A6472">{{ fu.modoTxt }}</span></div><span style="flex:none;font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:999px;background:{{ fu.estBg }};color:{{ fu.estFg }}">{{ fu.estTxt }}</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:#5A6472"><span>Última corrida: <strong style="color:#1B2430">{{ fu.corrida }}</strong></span><span>Leídos: <strong style="color:#1B2430;font-variant-numeric:tabular-nums">{{ fu.leidos }}</strong></span><span>Nuevos: <strong style="color:#1B2430;font-variant-numeric:tabular-nums">{{ fu.nuevos }}</strong></span></div>
+<sc-if value="{{ fu.hayDetalle }}"><span style="font-size:12.5px;line-height:1.4;color:{{ fu.estFg }}">{{ fu.detalle }}</span></sc-if>
+</div></sc-for>
+</div></sc-if>
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 4px 0"><span style="font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#8C6A2E">ÚLTIMAS ALARMAS</span><span style="font-size:12.5px;color:#5A6472">{{ alarmasN }}</span></div>
+<sc-if value="{{ alarmasBloq }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;flex-direction:row;align-items:center;gap:10px;font-size:13.5px;line-height:1.4;color:#5A6472"><span style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;color:#8C6A2E;flex:none">lock</span><span>El detalle de las alarmas está protegido: desbloquea con tu frase.</span></div></sc-if>
+<sc-if value="{{ alarmasVacia }}"><div style="background:#fff;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;font-size:13.5px;line-height:1.4;color:#5A6472">No hay alarmas recientes.</div></sc-if>
+<sc-for list="{{ alarmas }}" as="al" hint-placeholder-count="3"><div style="background:#fff;border-radius:14px;padding:10px 12px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;box-sizing:border-box"><span style="width:32px;height:32px;border-radius:50%;background:{{ al.bg }};color:{{ al.fg }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;line-height:1">{{ al.icon }}</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:13.5px;line-height:1.4;color:#1B2430;text-wrap:pretty">{{ al.texto }}</span><span style="font-size:12px;color:#5A6472">{{ al.cuando }}</span></div></div></sc-for>
+</div>
+</div>
+<sc-if value="{{ abierto }}"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 4px;font-size:12.5px;color:#5A6472"><span style="display:flex;gap:6px;align-items:center"><span style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1">lock_open</span>Datos descifrados en este navegador</span><button onClick="{{ olvidar }}" style="min-height:44px;padding:0 14px;border:1px solid #DCE2EA;border-radius:10px;background:#fff;color:#3C4552;font:700 12.5px/1 'Figtree',sans-serif;cursor:pointer" style-active="transform:scale(.97)">Olvidar clave</button></div></sc-if>
 </div>
 </sc-if>
 
@@ -381,7 +496,7 @@ a:hover{text-decoration:underline}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;demo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;animaciones&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;}}">
 class Component extends DCLogic {
-  state = { data: null, missing: false, M: false, t: 0, len: 0, av: null, tab: 'resumen', sel: null, done: {}, pend: {}, bEnv: {}, bUi: {}, celeb: null, pieces: null, tour: -1 };
+  state = { data: null, missing: false, M: false, t: 0, len: 0, av: null, tab: 'resumen', sel: null, done: {}, pend: {}, bEnv: {}, bUi: {}, priv: null, frase: '', lockErr: '', lockBusy: false, kitId: null, copiado: '', celeb: null, pieces: null, tour: -1 };
   pathRef = React.createRef();
   calRef = React.createRef();
   PTS = [[80, 330], [215, 232], [345, 308], [482, 196], [612, 284], [762, 150], [905, 236]];
@@ -458,6 +573,7 @@ class Component extends DCLogic {
     return a + (b - a) * frac;
   }
   afterData() {
+    this.autoAbrir();
     const D = this.eff();
     try { this.setState({ done: JSON.parse(localStorage.getItem('mapaHecho:' + D.hoy) || '{}') }); } catch (e) {}
     setTimeout(() => { this.setState({ M: true }); this.measure(false); }, 120);
@@ -465,8 +581,27 @@ class Component extends DCLogic {
     if (!visto) setTimeout(() => this.setState({ tour: 0, tab: 'resumen' }), this.anim() ? 3000 : 400);
     else setTimeout(() => this.checkCeleb(), this.anim() ? 2900 : 300);
   }
+  // D8: las cifras de plata no viajan en claro; vienen dentro del bloque cifrado (`plata`). Sin la frase quedan en null y se muestran como «—».
+  conPlata(raw, P) {
+    const p = P && P.plata;
+    if (!p || typeof p !== 'object') return raw;
+    if (this._cp && this._cp[0] === raw && this._cp[1] === p) return this._cp[2];
+    const o = (x) => (x && typeof x === 'object' ? x : {});
+    const d = { ...raw };
+    d.proyecto = { ...o(raw.proyecto), ...o(p.proyecto) };
+    d.avance_meta = { ...o(raw.avance_meta), ...o(p.avance_meta) };
+    d.alerta_plan_b = { ...o(raw.alerta_plan_b), ...o(p.alerta_plan_b) };
+    d.indicadores = { ...o(raw.indicadores), cobrado_y_por_cobrar_30d: { ...o(o(raw.indicadores).cobrado_y_por_cobrar_30d), ...o(p.cobrado_y_por_cobrar_30d) } };
+    const ec = o(p.embudo_cobrado), em = o(raw.embudo), car = o(em.carriles);
+    d.embudo = { ...em, total: { ...o(em.total), cobrado: ec.total != null ? ec.total : o(em.total).cobrado },
+      carriles: { ...car, whatsapp: { ...o(car.whatsapp), cobrado: ec.whatsapp != null ? ec.whatsapp : o(car.whatsapp).cobrado },
+                  portales: { ...o(car.portales), cobrado: ec.portales != null ? ec.portales : o(car.portales).cobrado } } };
+    this._cp = [raw, p, d];
+    return d;
+  }
   eff() {
-    const raw = this.state.data; if (!raw) return null;
+    const raw0 = this.state.data; if (!raw0) return null;
+    const raw = this.conPlata(raw0, this.state.priv);
     if (!this.props.demo) return raw;
     if (this._demo) return this._demo;
     const d = JSON.parse(JSON.stringify(raw));
@@ -500,13 +635,13 @@ class Component extends DCLogic {
     this.setState({ celeb: c, pieces });
   }
   BANDEJA_REPO() { return 'https://github.com/rodrigotg2-maker/mapa-rd-k7q2/issues/new'; }
-  bandUrl(id, accion, extra) {
-    const cuerpo = 'id: ' + id + '\ndecision: ' + accion + (extra ? '\n' + extra : '');
-    return this.BANDEJA_REPO() + '?title=' + encodeURIComponent('decision ' + id + ' ' + accion) + '&body=' + encodeURIComponent(cuerpo) + '&labels=decision';
-  }
-  bandItems(D) {
-    const B = (D && D.bandeja) || {};
-    return Array.isArray(B.items) ? B.items.filter(x => x && /^[A-Za-z0-9_.:-]{1,80}$/.test(String(x.id || ''))) : [];
+  bandUrl(x, accion, extra) {
+    // D7: el issue es público. Solo lleva el ref (o el id en datos v2), la acción y, en descartar, un motivo de la lista fija. Nunca texto libre.
+    if (this.sinRef(x) || accion === 'editar') return '';
+    const MOTIVOS = ['inglés', 'área', 'sueldo', 'modalidad', 'otro'];
+    if (!(accion === 'descartar' && MOTIVOS.some(m => extra === 'motivo: ' + m))) extra = '';
+    const v = x.ref || x.id, cuerpo = (x.ref ? 'ref: ' : 'id: ') + v + '\ndecision: ' + accion + (extra ? '\n' + extra : '');
+    return this.BANDEJA_REPO() + '?title=' + encodeURIComponent('decision ' + v + ' ' + accion) + '&body=' + encodeURIComponent(cuerpo) + '&labels=decision';
   }
   bandResumen(D) {
     const its = this.bandItems(D), env = this.state.bEnv || {};
@@ -528,47 +663,206 @@ class Component extends DCLogic {
     this.setState({ bEnv: env });
     this.guardarEnviadas(env);
   }
+  /* ===== Panel v3: datos cifrados, Bandeja ampliada, Kit, Estado y Búsqueda ===== */
+  ESTADOS_V3() { return {
+    en_bandeja: ['En bandeja', '#F7F1E7', '#8C6A2E'], aprobada: ['Aprobada', '#EBF4FA', '#1D4E73'], descartada: ['Descartada', '#EEF1F5', '#5A6472'],
+    kit_enviado: ['Kit para enviar', '#F7F1E7', '#8C6A2E'], enviada: ['Enviada', '#EBF4FA', '#1D4E73'], respuesta: ['Respondieron', '#E3F1E8', '#1F6B3A'],
+    entrevista: ['Entrevista', '#E3F1E8', '#1F6B3A'], oferta: ['Oferta', '#E3F1E8', '#1F6B3A'], rechazo: ['Rechazo', '#EEF1F5', '#5A6472'],
+    sin_respuesta: ['Sin respuesta', '#EEF1F5', '#5A6472'], cerrada: ['Cerrada', '#EEF1F5', '#5A6472'], en_cola: ['En cola', '#EBF4FA', '#1D4E73'],
+    enviando: ['Enviando', '#EBF4FA', '#1D4E73'], seco_ok: ['Lista (prueba)', '#EBF4FA', '#1D4E73'], requiere_accion: ['Requiere acción', '#FBE9EC', '#B3263A'],
+    error: ['Error', '#FBE9EC', '#B3263A'],
+    manual: ['Falta que postules tú', '#FBE7CF', '#8A4B0B'] }; }
+  b64d(s) { const bin = atob(s), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+  b64e(u) { let s = ''; for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
+  cifradoOk(c) { return !!c && c.algoritmo === 'AES-256-GCM' && c.kdf === 'PBKDF2-SHA256' && Number(c.iteraciones) >= 310000 && !!c.sal && !!c.iv && !!c.datos; }
+  async abrirConClave(raw, c) {
+    const k = await crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: this.b64d(c.iv), additionalData: new TextEncoder().encode('mapa-rd:v3') }, k, this.b64d(c.datos));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+  async claveDeFrase(frase, c) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(frase.normalize('NFC')), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: this.b64d(c.sal), iterations: Number(c.iteraciones) }, base, 256);
+    return new Uint8Array(bits);
+  }
+  async autoAbrir() {
+    const D = this.eff(), c = D && D.cifrado;
+    if (!this.cifradoOk(c) || this.state.priv || !(window.crypto && crypto.subtle)) return;
+    let g = null; try { g = JSON.parse(localStorage.getItem('mapaClaveV3') || 'null'); } catch (e) {}
+    if (!g || g.sal !== c.sal || Number(g.it) !== Number(c.iteraciones) || !g.k) return;
+    try { const priv = await this.abrirConClave(this.b64d(g.k), c); this.setState({ priv }); }
+    catch (e) { try { localStorage.removeItem('mapaClaveV3'); } catch (e2) {} }
+  }
+  async desbloquear() {
+    const D = this.eff(), c = D && D.cifrado, frase = this.state.frase || '';
+    if (!this.cifradoOk(c)) { this.setState({ lockErr: 'Los datos cifrados no tienen un formato válido.' }); return; }
+    if (!frase) { this.setState({ lockErr: 'Escribe tu frase.' }); return; }
+    if (Array.from(frase.normalize('NFC')).length < 16) { this.setState({ lockErr: 'La frase debe tener al menos 16 caracteres.' }); return; }
+    if (!(window.crypto && crypto.subtle)) { this.setState({ lockErr: 'Este navegador no permite descifrar aquí (hace falta una página segura, https).' }); return; }
+    this.setState({ lockBusy: true, lockErr: '' });
+    try {
+      const raw = await this.claveDeFrase(frase, c), priv = await this.abrirConClave(raw, c);
+      try { localStorage.setItem('mapaClaveV3', JSON.stringify({ sal: c.sal, it: Number(c.iteraciones), k: this.b64e(raw) })); } catch (e) {}
+      this.setState({ priv, frase: '', lockBusy: false, lockErr: '' });
+    } catch (e) { this.setState({ lockBusy: false, lockErr: 'La frase no abre los datos. Revisa mayúsculas y espacios.' }); }
+  }
+  olvidarClave() {
+    try { localStorage.removeItem('mapaClaveV3'); } catch (e) {}
+    this.setState({ priv: null, frase: '', lockErr: '', kitId: null });
+  }
+  copiar(txt, clave) {
+    const ok = () => { this.setState({ copiado: clave }); clearTimeout(this._tc); this._tc = setTimeout(() => this.setState({ copiado: '' }), 1800); };
+    const viejo = () => { const ta = document.createElement('textarea'); ta.value = txt; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select(); try { if (document.execCommand('copy')) ok(); } catch (e) {} ta.remove(); };
+    try { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(txt).then(ok, viejo); return; } } catch (e) {}
+    viejo();
+  }
+  sinRef(x) { return !!this.state.priv && !x.ref; }   // datos cifrados sin ref: nunca se usa el id real
+  idOk(x) { return !!x && /^[A-Za-z0-9_.:-]{1,80}$/.test(String(x.id || '')); }
+  urlOk(u) { return /^https?:\/\//i.test(u || '') ? u : ''; }
+  fechaCorta(iso) { if (!iso) return ''; const [y, m, d] = String(iso).slice(0, 10).split('-'); return d + '/' + m + (y !== '2026' ? '/' + y.slice(2) : ''); }
+  fechaHora(iso) { if (!iso) return 'sin correr'; const D = this.eff() || {}, f = String(iso).slice(0, 10), h = String(iso).slice(11, 16); return (f === D.hoy ? 'hoy' : this.fechaCorta(f)) + (h ? ' ' + h : ''); }
+  lockVals(D) {
+    const S = this.state, hay = !!(D && D.cifrado && D.cifrado.datos);
+    return { lockOn: hay && !S.priv, abierto: hay && !!S.priv, lockFrase: S.frase || '', onFrase: ev => this.setState({ frase: ev.target.value, lockErr: '' }),
+      lockKey: ev => { if (ev.key === 'Enter') this.desbloquear(); }, lockEntrar: () => this.desbloquear(), lockBtn: S.lockBusy ? 'Abriendo…' : 'Desbloquear',
+      lockErr: S.lockErr || '', hayLockErr: !!S.lockErr, lockCorta: Array.from((S.frase || '').normalize('NFC')).length > 0 && Array.from((S.frase || '').normalize('NFC')).length < 16, olvidar: () => this.olvidarClave() };
+  }
+  bandItems(D) {
+    const P = this.state.priv, B = (P && P.bandeja) || (D && D.bandeja) || {};
+    const l = Array.isArray(B.items) ? B.items.filter(x => this.idOk(x)) : [];
+    return l.slice().sort((a, b) => (b.puntaje == null ? -1 : b.puntaje) - (a.puntaje == null ? -1 : a.puntaje));
+  }
+  privLista(clave) { const P = this.state.priv; return P && Array.isArray(P[clave]) ? P[clave].filter(x => x && (clave === 'alarmas' || this.idOk(x))) : []; }
+  modoVals(modo) {
+    const asis = modo === 'asistida';
+    return { hayModo: modo === 'asistida' || modo === 'automatica', modoTxt: asis ? 'Asistida' : 'Automática', modoIcon: asis ? 'touch_app' : 'bolt', modoBg: asis ? '#F7F1E7' : '#2C3E50', modoFg: asis ? '#8C6A2E' : '#D8BE8A', esAsistida: asis };
+  }
   bandejaVals(D) {
-    const S = this.state, its = this.bandItems(D), env = S.bEnv || {}, ui = S.bUi || {}, B = (D && D.bandeja) || {};
-    const MOT = ['inglés', 'área', 'sueldo', 'modalidad', 'otro'];
-    const dm = iso => { if (!iso) return ''; const [y, m, d] = iso.split('-'); return d + '/' + m + (y !== '2026' ? '/' + y.slice(2) : ''); };
+    const S = this.state, its = this.bandItems(D), env = S.bEnv || {}, ui = S.bUi || {}, B = (S.priv && S.priv.bandeja) || (D && D.bandeja) || {};
+    const MOT = ['inglés', 'área', 'sueldo', 'modalidad', 'otro'], E = this.ESTADOS_V3();
+    const dm = iso => this.fechaCorta(iso);
     const R = this.bandResumen(D);
+    const bloqueado = !!(D && D.cifrado && D.cifrado.datos) && !S.priv;
     const items = its.map(x => {
-      const id = x.id, u = ui[id] || {}, e = env[id], texto = u.texto || '', limpio = texto.replace(/\s+/g, ' ').trim().slice(0, 600);
-      const enlace = /^https?:\/\//i.test(x.enlace || '') ? x.enlace : '';
+      const id = x.id, u = ui[id] || {}, e = env[id];
+      const enlace = this.urlOk(x.enlace);
       const tipo = String(x.tipo || '').replace(/_/g, ' ');
       return {
         id, titulo: x.titulo || '(sin título)', empresa: x.empresa || '', portal: x.portal || '',
+        ...this.modoVals(x.modo),
         hayPuntaje: x.puntaje != null, puntaje: x.puntaje,
         porQue: x.por_que || '', hayPorQue: !!x.por_que, brechas: x.brechas || '', hayBrechas: !!x.brechas,
+        cv: x.cv || '', hayCv: !!x.cv, mensaje: x.mensaje || '', hayMsg: !!x.mensaje, verMsg: !!u.verMsg, msgTxt: u.verMsg ? 'Ocultar mensaje' : 'Ver mensaje',
+        toggleMsg: () => this.setBUi(id, { verMsg: !u.verMsg }),
         enlace, hayEnlace: !!enlace, tipoTag: tipo && !/^postulaci/i.test(tipo) ? tipo.toUpperCase() : '',
         color: e ? '#2378B5' : '#D8BE8A',
-        sent: !!e, pend: !e, sentTxt: e ? 'Elegiste «' + e.a + '». Si ya tocaste Submit, el agente la aplica en su próxima corrida.' : '',
-        urlAprobar: this.bandUrl(id, 'aprobar'), clickAprobar: () => this.marcarEnviada(id, 'aprobar'),
+        sent: !!e, pend: !e && !this.sinRef(x), sinRef: this.sinRef(x), sentTxt: e ? 'Elegiste «' + e.a + '». Si ya tocaste Submit, el agente la aplica en su próxima corrida.' : '',
+        urlAprobar: this.bandUrl(x, 'aprobar'), clickAprobar: () => this.marcarEnviada(id, 'aprobar'),
         modoDesc: u.modo === 'descartar', modoEd: u.modo === 'editar',
+        // /edito <ref>: texto. El ref es el mismo código opaco de los issues (cifrar_datos.ref_de); sin ref no hay comando.
+        puedeEditarTg: !this.sinRef(x), cmdEdito: '/edito ' + (x.ref || x.id) + ': lo que hay que cambiar',
+        copiarEdito: () => this.copiar('/edito ' + (x.ref || x.id) + ': ', 'edito:' + id), copiarEditoTxt: S.copiado === 'edito:' + id ? 'Copiado' : 'Copiar',
         descBg: u.modo === 'descartar' ? '#F7F1E7' : '#fff', descBd: u.modo === 'descartar' ? '#D8BE8A' : '#DCE2EA',
         edBg: u.modo === 'editar' ? '#F7F1E7' : '#fff', edBd: u.modo === 'editar' ? '#D8BE8A' : '#DCE2EA',
         toggleDesc: () => this.setBUi(id, { modo: u.modo === 'descartar' ? '' : 'descartar' }),
         toggleEd: () => this.setBUi(id, { modo: u.modo === 'editar' ? '' : 'editar' }),
-        motivos: MOT.map(m => ({ label: m, url: this.bandUrl(id, 'descartar', 'motivo: ' + m), click: () => this.marcarEnviada(id, 'descartar') })),
-        texto, onTexto: ev => this.setBUi(id, { texto: ev.target.value }),
-        hayTexto: !!limpio, sinTexto: !limpio,
-        urlEditar: this.bandUrl(id, 'editar', 'texto: ' + limpio), clickEditar: () => this.marcarEnviada(id, 'editar'),
+        motivos: MOT.map(m => ({ label: m, url: this.bandUrl(x, 'descartar', 'motivo: ' + m), click: () => this.marcarEnviada(id, 'descartar') })),
         deshacer: () => this.quitarMarca(id)
       };
     });
+    // Aprobadas que aún no salen (se pueden cancelar)
+    const ENV = ['aprobada', 'en_cola', 'enviando', 'seco_ok', 'requiere_accion', 'error', 'manual'], CAN = ['aprobada', 'en_cola', 'seco_ok', 'requiere_accion', 'manual'], REI = ['requiere_accion', 'error', 'seco_ok'];
+    const pl = this.privLista('postulaciones');
+    const porPuntaje = (a, b) => (b.puntaje == null ? -1 : b.puntaje) - (a.puntaje == null ? -1 : a.puntaje);
+    const aprob = pl.filter(x => ENV.includes(x.estado)).sort(porPuntaje).map(x => {
+      const kc = 'cancelar:' + x.id, kr = 'reintentar:' + x.id, e = env[kc] || env[kr], est = E[x.estado] || [x.estado, '#EEF1F5', '#5A6472'];
+      return { id: x.id, titulo: x.titulo || '(sin título)', empresa: x.empresa || '', portal: x.portal || '', ...this.modoVals(x.modo),
+        estadoTxt: est[0], estBg: est[1], estFg: est[2], color: e ? '#2378B5' : (x.estado === 'requiere_accion' || x.estado === 'error' ? '#B3263A' : '#D8BE8A'),
+        puedeCancelar: CAN.includes(x.estado) && !e && !this.sinRef(x), puedeReintentar: (REI.includes(x.estado) || (x.estado === 'manual' && x.modo === 'automatica')) && !e && !this.sinRef(x), sinRef: this.sinRef(x), sent: !!e,
+        sentTxt: e ? 'Elegiste «' + e.a + '». Si ya tocaste Submit, el agente lo aplica en su próxima corrida.' : '',
+        urlCancelar: this.bandUrl(x, 'cancelar'), clickCancelar: () => this.marcarEnviada(kc, 'cancelar'),
+        urlReintentar: this.bandUrl(x, 'reintentar'), clickReintentar: () => this.marcarEnviada(kr, 'reintentar'),
+        deshacer: () => { this.quitarMarca(kc); this.quitarMarca(kr); } };
+    });
+    // Kits (postulación asistida)
+    const kitsTodos = pl.filter(x => x.estado === 'kit_enviado').sort(porPuntaje);
+    const kitsLista = kitsTodos.map(x => { const kc = 'cancelar:' + x.id, e = env[kc]; return { id: x.id, titulo: x.titulo || '(sin título)', empresa: x.empresa || '', portal: x.portal || '', ...this.modoVals(x.modo || 'asistida'),
+      hayPuntaje: x.puntaje != null, puntaje: x.puntaje, hecho: !!env['postule:' + x.id], pendiente: !env['postule:' + x.id] && !e,
+      puedeCancelar: !e && !env['postule:' + x.id] && !this.sinRef(x), sinRef: this.sinRef(x), cancelada: !!e, urlCancelar: this.bandUrl(x, 'cancelar'), clickCancelar: () => this.marcarEnviada(kc, 'cancelar'), deshacerCancelar: () => this.quitarMarca(kc),
+      abrir: () => { this.setState({ kitId: x.id }); window.scrollTo({ top: 0 }); } }; });
+    const kitsPend = kitsLista.filter(k => k.pendiente).length;
+    // Vista del kit abierto
+    const kid = S.kitId, kit = kid ? ((S.priv && Array.isArray(S.priv.kits) ? S.priv.kits : []).find(k => k.id === kid) || null) : null;
+    const info = kid ? (pl.find(x => x.id === kid) || its.find(x => x.id === kid) || {}) : {};
+    const kenv = kid ? env['postule:' + kid] : null, cp = S.copiado;
+    const kSinRef = !!kid && this.sinRef(Object.assign({}, info, kit || {}));
+    const resp = kit && Array.isArray(kit.respuestas) ? kit.respuestas : [];
     const faltan = R.pendientes;
+    const partes = [];
+    if (faltan) partes.push(faltan + (faltan === 1 ? ' aviso por decidir' : ' avisos por decidir'));
+    if (kitsPend) partes.push(kitsPend + (kitsPend === 1 ? ' kit para enviar' : ' kits para enviar'));
     return {
-      isBand: S.tab === 'bandeja', bandItems: items, bandVacia: items.length === 0, bandHay: items.length > 0,
-      bandBadge: faltan > 0 ? String(faltan) : '',
-      bandTitulo: !items.length ? 'Todo al día' : faltan ? faltan + (faltan === 1 ? ' aviso por decidir' : ' avisos por decidir') : 'Todo enviado a GitHub',
-      bandSub: B.fecha ? 'Bandeja del ' + dm(B.fecha) + (R.enviadas ? ' · ' + R.enviadas + (R.enviadas === 1 ? ' ya enviada' : ' ya enviadas') + ' a GitHub' : '') : 'El agente deja una bandeja nueva cada día hábil.'
+      isBand: S.tab === 'bandeja', bandItems: items, bandVacia: items.length === 0 && !bloqueado, bandHay: items.length > 0,
+      bandBadge: (faltan + kitsPend) > 0 ? String(faltan + kitsPend) : '',
+      bandTitulo: bloqueado ? 'Datos protegidos' : !items.length && !kitsPend ? 'Todo al día' : partes.length ? partes.join(' y ') : 'Todo enviado a GitHub',
+      bandSub: B.fecha ? 'Bandeja del ' + dm(B.fecha) + ', de mayor a menor puntaje' + (R.enviadas ? ' · ' + R.enviadas + (R.enviadas === 1 ? ' ya enviada' : ' ya enviadas') + ' a GitHub' : '') : 'El agente deja una bandeja nueva cada día hábil.',
+      aprob, hayAprob: aprob.length > 0, aprobCuenta: String(aprob.length),
+      kitsLista, hayKits: kitsLista.length > 0, kitsCuenta: String(kitsLista.length),
+      isLista: !kid, isKitVista: !!kid,
+      kitVolver: () => { this.setState({ kitId: null }); window.scrollTo({ top: 0 }); },
+      kitNoEsta: !!kid && !kit, kitHay: !!kit,
+      kitTitulo: info.titulo || '(sin título)', kitEmpresa: info.empresa || '', kitPortal: info.portal || '', ...(() => { const m = this.modoVals(info.modo || 'asistida'); return { kitModoTxt: m.modoTxt, kitModoIcon: m.modoIcon, kitModoBg: m.modoBg, kitModoFg: m.modoFg }; })(),
+      kitEnlace: this.urlOk(kit && kit.enlace), kitHayEnlace: !!this.urlOk(kit && kit.enlace),
+      kitCv: (kit && kit.cv) || '', kitHayCv: !!(kit && kit.cv), kitCopiarCv: () => this.copiar(kit.cv, 'cv'), kitCvTxt: cp === 'cv' ? 'Copiado' : 'Copiar', kitCvOk: cp === 'cv',
+      kitMensaje: (kit && kit.mensaje) || '', kitHayMensaje: !!(kit && kit.mensaje), kitCopiarMsg: () => this.copiar(kit.mensaje, 'msg'), kitMsgTxt: cp === 'msg' ? 'Copiado' : 'Copiar', kitMsgOk: cp === 'msg',
+      kitRespuestas: resp.map((r, i) => ({ pregunta: r.pregunta || '', respuesta: r.respuesta || '', copiar: () => this.copiar(r.respuesta || '', 'r' + i), txt: cp === 'r' + i ? 'Copiado' : 'Copiar', ok: cp === 'r' + i })),
+      kitHayResp: resp.length > 0,
+      kitUrlYa: kid ? this.bandUrl(Object.assign({ id: kid }, info, kit || {}), 'postule') : '', kitClickYa: () => this.marcarEnviada('postule:' + kid, 'postule'),
+      kitHecho: !!kenv, kitPend: !kenv && !kSinRef, kitSinRef: kSinRef, kitPuedeCancelar: !kenv && !kSinRef && !(kid && env['cancelar:' + kid]), kitUrlCancelar: kid ? this.bandUrl(Object.assign({ id: kid }, info, kit || {}), 'cancelar') : '', kitClickCancelar: () => this.marcarEnviada('cancelar:' + kid, 'cancelar'), kitDeshacer: () => this.quitarMarca('postule:' + kid)
+    };
+  }
+  estadoVals(D) {
+    const S = this.state, EP = D && D.estado_postulaciones, BQ = D && D.busqueda, E = this.ESTADOS_V3();
+    const bloqueado = !!(D && D.cifrado && D.cifrado.datos) && !S.priv;
+    const ORDEN = ['requiere_accion', 'error', 'manual', 'en_bandeja', 'aprobada', 'en_cola', 'enviando', 'seco_ok', 'kit_enviado', 'enviada', 'respuesta', 'entrevista', 'oferta', 'rechazo', 'sin_respuesta', 'cerrada', 'descartada'];
+    const pe = (EP && EP.por_estado) || {};
+    const chips = ORDEN.filter(k => pe[k] > 0).map(k => ({ label: (E[k] || [k, '#EEF1F5', '#5A6472'])[0], n: String(pe[k]), bg: (E[k] || [k, '#EEF1F5', '#5A6472'])[1], fg: (E[k] || [k, '#EEF1F5', '#5A6472'])[2] }));
+    const req = EP ? Number(EP.requieren_accion || 0) : 0;
+    const lista = this.privLista('postulaciones').slice().sort((a, b) => String(b.fecha || '').localeCompare(String(a.fecha || '')) || (b.puntaje || 0) - (a.puntaje || 0)).map(x => {
+      const est = E[x.estado] || [x.estado, '#EEF1F5', '#5A6472'], enlace = this.urlOk(x.enlace);
+      return { id: x.id, titulo: x.titulo || '(sin título)', empresa: x.empresa || '', portal: x.portal || '', ...this.modoVals(x.modo),
+        hayPuntaje: x.puntaje != null, puntaje: x.puntaje, estadoTxt: est[0], estBg: est[1], estFg: est[2], fecha: this.fechaCorta(x.fecha), hayFecha: !!x.fecha,
+        enlace, hayEnlace: !!enlace, esKit: x.estado === 'kit_enviado', abrirKit: () => { this.setState({ kitId: x.id, tab: 'bandeja' }); try { localStorage.setItem('mapaTab', 'bandeja'); } catch (e) {} window.scrollTo({ top: 0 }); } };
+    });
+    const NOM = { getonboard: 'Get on Board', laborum: 'Laborum', linkedin: 'LinkedIn', indeed: 'Indeed', trabajando: 'Trabajando', computrabajo: 'Computrabajo' };
+    const EF = { ok: ['Al día', '#E3F1E8', '#1F6B3A'], pausada: ['Pausada', '#F7F1E7', '#8C6A2E'], bloqueada: ['Bloqueada', '#FBE9EC', '#B3263A'], error: ['Error', '#FBE9EC', '#B3263A'], sin_correr: ['Sin correr', '#EEF1F5', '#5A6472'] };
+    const fuentes = ((BQ && Array.isArray(BQ.fuentes)) ? BQ.fuentes : []).map(f => {
+      const ef = EF[f.estado] || [String(f.estado || ''), '#EEF1F5', '#5A6472'];
+      const det = (f.estado === 'pausada' && f.pausa_hasta ? 'hasta ' + this.fechaHora(f.pausa_hasta) : '') + (f.motivo ? (f.estado === 'pausada' && f.pausa_hasta ? ' · ' : '') + f.motivo : '');
+      return { nombre: NOM[f.fuente] || String(f.fuente || '?'), modoTxt: f.modo === 'conector' ? 'Conector' : 'Anónima', corrida: this.fechaHora(f.ultima_corrida),
+        leidos: String(f.leidos == null ? '—' : f.leidos), nuevos: String(f.nuevos == null ? '—' : f.nuevos), estTxt: ef[0], estBg: ef[1], estFg: ef[2], detalle: det, hayDetalle: !!det };
+    });
+    const AI = { nuevas: 'notifications', postulada: 'send', requiere_accion: 'priority_high', bloqueo: 'block', fuente: 'travel_explore', latido: 'schedule' };
+    const alarmas = this.privLista('alarmas').slice().sort((a, b) => String(b.fecha || '').localeCompare(String(a.fecha || ''))).map(a => {
+      const rojo = a.tipo === 'bloqueo' || a.tipo === 'requiere_accion';
+      return { icon: AI[a.tipo] || 'notifications', fg: rojo ? '#B3263A' : '#8C6A2E', bg: rojo ? '#FBE9EC' : '#F7F1E7', texto: a.texto || '', cuando: this.fechaHora(a.fecha) };
+    });
+    const nAl = BQ ? Number(BQ.alarmas_recientes || 0) : 0;
+    return {
+      isEstado: S.tab === 'estado', hayEP: !!EP, cntHoy: EP ? String(EP.enviadas_hoy) : '—', cntSemana: EP ? String(EP.enviadas_semana) : '—', cntEntrev: EP ? String(EP.entrevistas) : '—',
+      hayReq: req > 0, reqTxt: req === 1 ? '1 postulación requiere tu acción' : req + ' postulaciones requieren tu acción', estBadge: req > 0 ? String(req) : '',
+      estChips: chips, hayChips: chips.length > 0,
+      estTitulo: EP ? (EP.enviadas_hoy === 1 ? '1 postulación enviada hoy' : EP.enviadas_hoy + ' postulaciones enviadas hoy') : 'Sin conteos todavía',
+      estSub: BQ && BQ.actualizado ? 'Búsqueda actualizada ' + this.fechaHora(BQ.actualizado) : 'El agente todavía no publica el estado.',
+      estLista: lista, estListaHay: lista.length > 0, estListaVacia: lista.length === 0 && !bloqueado, estBloq: bloqueado, estListaCuenta: bloqueado ? 'protegida' : String(lista.length),
+      busqHay: fuentes.length > 0, busqFuentes: fuentes, busqAct: BQ && BQ.actualizado ? this.fechaHora(BQ.actualizado) : '',
+      alarmas, alarmasHay: alarmas.length > 0, alarmasBloq: bloqueado && nAl > 0, alarmasN: nAl === 1 ? '1 alarma reciente' : nAl + ' alarmas recientes', alarmasVacia: !bloqueado && alarmas.length === 0
     };
   }
   setTab(k) { this.setState({ tab: k }); try { localStorage.setItem('mapaTab', k); } catch (e) {} }
   tourSteps() { return [
     { z: 'map', t: 'Dónde estoy', x: 'El camino tiene 7 etapas. Tu foto marca el día de hoy; lo dorado es lo recorrido. Toca cualquier etapa para ver qué tiene que pasar para cumplirla.' },
-    { z: 'meta', t: 'Cuánto me falta', x: 'El anillo muestra qué parte de los $600.000 líquidos al mes ya entra. Se mide con lo cobrado en 30 días, así que va a partir en 0 hasta enero. Es normal.' },
+    { z: 'meta', t: 'Cuánto me falta', x: 'El anillo muestra qué parte de la meta líquida mensual ya entra. Se mide con lo cobrado en 30 días, así que va a partir en 0 hasta enero. Es normal.' },
     { z: 'hoy', t: 'Qué hago hoy', x: 'La lista la arma el agente cada mañana. Marca cada tarea al terminarla. Abajo está el plan del día según el calendario.' },
     { z: 'hito', t: 'La próxima meta corta', x: 'Cuántos días quedan para el próximo control y cómo vas en mensajes, conversaciones y propuestas. El dato de abajo te dice el ritmo que necesitas.' },
     { z: 'tabs', t: 'Más detalle, sin bajar', x: 'Caminos muestra los embudos. Semana, los números. Calendario, las dos semanas día por día. Pendientes, lo que falta de la base.' }
@@ -579,10 +873,10 @@ class Component extends DCLogic {
     const tourSteps = this.tourSteps(), ts = S.tour >= 0 ? tourSteps[S.tour] : null;
     const hi = z => ts && ts.z === z;
     const zv = z => ({ ['z' + z]: hi(z.toLowerCase()) ? 55 : 'auto', ['sh' + z]: hi(z.toLowerCase()) ? '0 0 0 4px #D8BE8A,0 0 0 9999px rgba(0,0,0,0)' : 'none' });
-    const TABS = [['resumen', 'Resumen', 'map'], ['bandeja', 'Bandeja', 'inbox'], ['caminos', 'Caminos', 'alt_route'], ['semana', 'Semana', 'monitoring'], ['calendario', 'Calendario', 'calendar_month'], ['pendientes', 'Pendientes', 'checklist']];
+    const TABS = [['resumen', 'Resumen', 'map'], ['bandeja', 'Bandeja', 'inbox'], ['caminos', 'Caminos', 'alt_route'], ['semana', 'Semana', 'monitoring'], ['calendario', 'Calendario', 'calendar_month'], ['pendientes', 'Pendientes', 'checklist'], ['estado', 'Estado', 'fact_check']];
     const base0 = { pathRef: this.pathRef, calRef: this.calRef, pathD: this.pathD(), ...zv('Map'), ...zv('Meta'), ...zv('Hoy'), ...zv('Hito'), ...zv('Tabs'),
-      tabs: TABS.map(([k, l, ic]) => ({ label: l, icon: ic, badge: k === 'bandeja' ? this.bandResumen(D).pendientes > 0 ? String(this.bandResumen(D).pendientes) : '' : '', bg: S.tab === k ? '#D8BE8A' : 'transparent', fg: S.tab === k ? '#2C3E50' : '#DCE3EB', pick: () => this.setTab(k) })),
-      ...this.bandejaVals(D),
+      tabs: TABS.map(([k, l, ic]) => ({ label: l, icon: ic, badge: k === 'bandeja' ? this.bandejaVals(D).bandBadge : k === 'estado' ? this.estadoVals(D).estBadge : '', bg: S.tab === k ? '#D8BE8A' : 'transparent', fg: S.tab === k ? '#2C3E50' : '#DCE3EB', pick: () => this.setTab(k) })),
+      ...this.bandejaVals(D), ...this.estadoVals(D), ...this.lockVals(D),
       isResumen: S.tab === 'resumen', isCaminos: S.tab === 'caminos', isSemana: S.tab === 'semana', isCalendario: S.tab === 'calendario', isPendientes: S.tab === 'pendientes',
       startTour: () => this.setState({ tour: 0, tab: 'resumen' }),
       endTour: () => { this.setState({ tour: -1 }); try { localStorage.setItem('mapaTourVisto', '1'); } catch (e) {} setTimeout(() => this.checkCeleb(), 400); },
@@ -591,7 +885,7 @@ class Component extends DCLogic {
       tourOn: !!ts, tourPaso: ts ? (S.tour + 1) + ' DE ' + tourSteps.length : '', tourTitulo: ts ? ts.t : '', tourTexto: ts ? ts.x : '', tourBtn: S.tour >= tourSteps.length - 1 ? 'Entendido' : 'Siguiente',
       tourDots: tourSteps.map((_, i) => ({ bg: i === S.tour ? '#8C6A2E' : '#DCE2EA' })) };
     if (!D) return { ...base0, missing: S.missing, estaciones: [], tareas: [], carriles: [], carrilesMini: [], vitrina: [], dotInds: [], logros: [], dias: [], pendientes: [], base: [], hitoMetas: [], semanaTipo: [], sel: {}, dashA: '0 99999', dashO: 0, avX: '8%', avY: '82.5%' };
-    const money = v => '$' + Math.round(v || 0).toLocaleString('es-CL');
+    const money = v => v == null ? '—' : '$' + Math.round(v).toLocaleString('es-CL');
     const dt = iso => new Date(iso + 'T12:00:00');
     const dm = iso => { if (!iso) return ''; const [y, m, d] = iso.split('-'); return d + '/' + m + (y !== '2026' ? '/' + y.slice(2) : ''); };
     const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -715,8 +1009,8 @@ class Component extends DCLogic {
       fechaLarga: DIAS[hoy.getDay()].replace(/^./, c => c.toUpperCase()) + ' ' + hoy.getDate() + ' de ' + MESES[hoy.getMonth()] + ' de ' + hoy.getFullYear(),
       diaProyecto: Math.round((hoy - dt(D.proyecto.inicio)) / 864e5) + 1,
       etapaNum: ea.numero, etapaNombre: ea.nombre, etapaQueda, estaciones, sel, dashA, dashO, avX: (av[0] / 10) + '%', avY: (av[1] / 4) + '%',
-      metaDash: (C * pct / 100).toFixed(1) + ' ' + C.toFixed(1), pctTxt: pct.toFixed(1).replace('.', ',') + ' %', liquidoTxt: money((am.liquido_estimado || 0) * t),
-      metaLiquidaTxt: money(am.meta_liquida || D.proyecto.meta_liquida_mensual), metaNetaTxt: money(am.meta_facturacion_neta || D.proyecto.meta_facturacion_neta_mensual),
+      metaDash: (C * pct / 100).toFixed(1) + ' ' + C.toFixed(1), pctTxt: am.porcentaje == null ? '—' : pct.toFixed(1).replace('.', ',') + ' %', liquidoTxt: am.liquido_estimado == null ? '—' : money(am.liquido_estimado * t),
+      metaLiquidaTxt: money(am.meta_liquida != null ? am.meta_liquida : D.proyecto.meta_liquida_mensual), metaNetaTxt: money(am.meta_facturacion_neta != null ? am.meta_facturacion_neta : D.proyecto.meta_facturacion_neta_mensual),
       porConfirmar: !!am.meta_facturacion_por_confirmar, notaMeta: D.proyecto.nota_meta || '',
       planBActiva: !!pb.activa, planBMensaje: pb.mensaje || 'Lo cobrado y por cobrar quedó bajo el umbral dos semanas seguidas.',
       hitoFecha: ph ? DIAS[dt(ph.fecha).getDay()] + ' ' + dm(ph.fecha) + ' · ' + ph.nombre : '', hitoDias: ph ? ph.dias_restantes : '—', hitoMetas, ritmoTxt,
@@ -728,10 +1022,10 @@ class Component extends DCLogic {
       semanaTxt: I.semana ? 'Lunes ' + dm(I.semana.desde) + ' a domingo ' + dm(I.semana.hasta) : '',
       horasVal: cnt(hs.valor), horasW: M ? Math.min(100, (hs.valor || 0) / (hs.maximo || 18) * 100) + '%' : '0%', horasColor: (hs.valor || 0) > (hs.maximo || 18) ? '#B3263A' : (hs.valor || 0) > (hs.meta || 15) ? '#C08A1E' : '#2C3E50',
       envVal: cnt(es.total), envMeta: es.meta || 20, envW: M ? Math.min(100, (es.total || 0) / (es.meta || 20) * 100) + '%' : '0%', envDetalle: (es.mensajes_whatsapp || 0) + ' por WhatsApp y ' + (es.postulaciones || 0) + ' postulaciones. Meta al partir: 20 por semana.',
-      dotInds, cobroActivo: !!cb.medicion_activa, cobroInactivo: !cb.medicion_activa, cobroTotal: money((cb.total || 0) * t), cobroW: M ? Math.min(100, (cb.total || 0) / (cb.meta_mensual || 850000) * 100) + '%' : '0%',
+      dotInds, cobroActivo: !!cb.medicion_activa, cobroInactivo: !cb.medicion_activa, cobroTotal: cb.total == null ? '—' : money(cb.total * t), cobroW: M && cb.meta_mensual ? Math.min(100, (cb.total || 0) / cb.meta_mensual * 100) + '%' : '0%',
       cobroDetalle: money(cb.cobrado_30d) + ' cobrado · ' + money(cb.por_cobrar) + ' por cobrar · meta ' + money(cb.meta_mensual), cobroDesde: dm(cb.se_mide_desde || '2027-01-15'),
       planBIcon: pb.activa ? 'warning' : pb.aplica ? 'visibility' : 'bedtime', planBBg: pb.activa ? '#FBE9EC' : '#EEF1F5', planBFg: pb.activa ? '#B3263A' : '#5A6472',
-      planBTxt: pb.activa ? (pb.mensaje || 'Activa: revisa el plan B.') : pb.aplica ? 'Vigilando. Todo bien por ahora.' : 'Dormida hasta el ' + dm(pb.desde || '2027-02-01') + '.', planBUmbral: money(pb.umbral || 150000),
+      planBTxt: pb.activa ? (pb.mensaje || 'Activa: revisa el plan B.') : pb.aplica ? 'Vigilando. Todo bien por ahora.' : 'Dormida hasta el ' + dm(pb.desde || '2027-02-01') + '.', planBUmbral: money(pb.umbral),
       dias, semanaTipo: [{ d: 'Lunes', t: 'Bandeja del agente y aprobar por lote. Nueva tanda de 5 a 10 mensajes.', h: '1,5 h' }, { d: 'Martes a jueves', t: 'Conversaciones, diagnósticos y propuestas. Con cliente: trabajo facturable.', h: 'Lo que quede de 15 h' }, { d: 'Jueves', t: 'Segunda revisión de la bandeja.', h: '20 min' }, { d: 'Viernes', t: 'Leer el resumen semanal, anotar horas y plata, decidir qué ajustar.', h: '30 min' }],
       pendientes, pendTxt: nPend + ' de ' + pendientes.length + ' cerrados', pendW: (nPend / pendientes.length * 100) + '%',
       base: B.map(([ok, tx]) => ({ t: tx, icon: ok ? 'check_circle' : 'schedule', color: ok ? '#2E8B57' : '#C08A1E', fg: ok ? '#3C4552' : '#1B2430' })), baseOk, baseTotal: B.length, baseDash: (c18 * (M ? baseOk / B.length : 0)).toFixed(1) + ' ' + c18.toFixed(1),
